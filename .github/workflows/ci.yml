@@ -60,11 +60,5 @@ jobs:
         run: yarn install --immutable
       - working-directory: ws
         run: yarn bootstrap:stack
-      - name: Build geokit
-        working-directory: ws/geokit
-        run: yarn install --immutable && yarn build
-      - name: Build geotypes
-        working-directory: ws/geotypes
-        run: yarn install --immutable && yarn build
       - working-directory: ws
         run: yarn workspace @local-hosting/spatial-ai ci
