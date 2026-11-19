@@ -9,6 +9,7 @@ describe('loadUiMapConfig', () => {
       }),
     )
     expect(body.configured).toBe(false)
+    expect(body.fallbackProviders).toEqual([])
   })
 
   it('prefers mapbox when both maptiler and mapbox keys are set', () => {
@@ -20,6 +21,7 @@ describe('loadUiMapConfig', () => {
     )
     expect(body.configured).toBe(true)
     expect(body.provider).toBe('mapbox')
+    expect(body.fallbackProviders).toEqual(['mapbox', 'maptiler'])
   })
 
   it('picks maptiler when only MAPTILER_KEY is set', () => {
@@ -31,5 +33,30 @@ describe('loadUiMapConfig', () => {
     expect(body.configured).toBe(true)
     expect(body.provider).toBe('maptiler')
     expect(body.maptilerKey).toBe('test-key')
+    expect(body.fallbackProviders).toEqual(['maptiler'])
+  })
+
+  it('honors GEOKIT_MAP_PROVIDER when key exists', () => {
+    const body = uiMapConfigPublicBody(
+      loadUiMapConfig({
+        MAPTILER_KEY: 't',
+        MAPBOX_TOKEN: 'b',
+        GEOKIT_MAP_PROVIDER: 'maptiler',
+      }),
+    )
+    expect(body.provider).toBe('maptiler')
+    const fallbacks = body.fallbackProviders as string[]
+    expect(fallbacks[0]).toBe('maptiler')
+    expect(fallbacks).toContain('mapbox')
+  })
+
+  it('re-routes forced provider when matching key is missing', () => {
+    const body = uiMapConfigPublicBody(
+      loadUiMapConfig({
+        MAPTILER_KEY: 't',
+        GEOKIT_MAP_PROVIDER: 'mapbox',
+      }),
+    )
+    expect(body.provider).toBe('maptiler')
   })
 })
