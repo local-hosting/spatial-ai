@@ -54,4 +54,25 @@ describe('runSpatialChat', () => {
     expect(result.intent?.source).toBe('rules_fallback')
     expect(result.source).toBe('rules')
   })
+
+  it('loads vocab by pack_mode daily', async () => {
+    const cell = demoVocabFixture.places[0]?.h3
+    const result = await runSpatialChat(
+      {
+        text: 'where can I go that is safe?',
+        lang: 'en',
+        pack_mode: 'daily',
+        session: { h3_cell: cell },
+        compose: { rules_only: true },
+      },
+      {
+        llamaBaseUrl: 'http://127.0.0.1:1',
+        glinerBaseUrl: 'http://127.0.0.1:1',
+        composeTimeoutMs: 200,
+        mapTimeoutMs: 200,
+      },
+    )
+    expect(result.label).toBe('where_to_go')
+    expect(result.place_ids.length).toBeGreaterThan(0)
+  })
 })
