@@ -3,7 +3,7 @@ import {
   mapQuestion,
   mapQuestionLexicon,
   type QuestionLabel,
-} from '@local-hosting/ai'
+} from '@local-hosting/local-ai'
 import type { SpatialChatRequest, SpatialChatResult, SpatialSource } from '../types/spatial.js'
 import { labelToIllocution, replyForLabel } from './crosswalk.js'
 import { placesNear } from './places-near.js'

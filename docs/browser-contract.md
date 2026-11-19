@@ -6,7 +6,7 @@ Apps (web, native shells) talk to **loopback spatial AI**, not cloud geocode or 
 
 | Port | Package | Role |
 |------|---------|------|
-| `8090` | `@local-hosting/ai` | Basic map + compose |
+| `8090` | `@local-hosting/local-ai` | Basic map + compose |
 | `8092` | `@local-hosting/spatial-ai` | `POST /spatial` or `POST /chat` |
 | `8080` | llama | Composer (optional) |
 | `8091` | GLiNER sidecar | Mapper (optional) |

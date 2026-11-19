@@ -1,16 +1,16 @@
 # Local spatial AI (layer)
 
-`@local-hosting/spatial-ai` **builds on** `@local-hosting/ai`.
+`@local-hosting/spatial-ai` **builds on** `@local-hosting/local-ai`.
 
 | Package | Role |
 |---------|------|
-| `@local-hosting/ai` | Basic local AI: map + compose, loopback, IDs-only |
+| `@local-hosting/local-ai` | Basic local AI: map + compose, loopback, IDs-only |
 | `@local-hosting/spatial-ai` | Spatial session, place candidates, token ladder A→B |
 | geokit / geotypes | Libraries for where / kind — **link, don’t merge** into `P_*` |
 
 ```text
 many apps
-   ├─ basic  →  @local-hosting/ai
+   ├─ basic  →  @local-hosting/local-ai
    └─ spatial →  @local-hosting/spatial-ai → ai → compose → wire
 ```
 
@@ -34,4 +34,4 @@ many apps
 
 - Cloud geocode on the critical path
 - Embedding geotypes catalog into `places[]`
-- Forcing every app through spatial (use `@local-hosting/ai` alone when geo isn’t needed)
+- Forcing every app through spatial (use `@local-hosting/local-ai` alone when geo isn’t needed)

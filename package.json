@@ -2,7 +2,7 @@
   "name": "@local-hosting/spatial-ai",
   "version": "0.1.0",
   "private": true,
-  "description": "Local spatial AI: place-grounded layer on @local-hosting/ai (geokit/geotypes linked, not merged).",
+  "description": "Local spatial AI: place-grounded layer on @local-hosting/local-ai (geokit/geotypes linked, not merged).",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/local-hosting/spatial-ai.git"
@@ -20,7 +20,7 @@
     "start": "node --import tsx src/api/start-server.ts"
   },
   "dependencies": {
-    "@local-hosting/ai": "0.1.0",
+    "@local-hosting/local-ai": "0.1.0",
     "@local-hosting/compose": "0.1.0",
     "@local-hosting/geokit": "0.4.3",
     "@local-hosting/geotypes": "0.2.0",

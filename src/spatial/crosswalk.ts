@@ -1,4 +1,4 @@
-import type { QuestionLabel } from '@local-hosting/ai'
+import type { QuestionLabel } from '@local-hosting/local-ai'
 
 export type SpatialIllocution = 'query' | 'report' | 'other'
 
