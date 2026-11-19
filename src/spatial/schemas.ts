@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import {
   SUPPORTED_LANGUAGES,
-  composeRequestSchema,
+  eventSummarySchema,
   vocabularySchema,
 } from '@local-hosting/local-ai'
 
@@ -26,7 +26,7 @@ export const spatialChatRequestSchema = z
     vocab_tip: z.string().min(1).optional(),
     pack_mode: packModeSchema.optional(),
     session: spatialSessionSchema.optional(),
-    event: composeRequestSchema.shape.event.optional(),
+    event: eventSummarySchema.optional(),
     compose: z
       .object({
         rules_only: z.boolean().optional(),

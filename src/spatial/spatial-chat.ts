@@ -24,7 +24,8 @@ function shouldRulesOnlyCompose(
   confidence: number,
 ): boolean {
   if (rulesOnlyRequest) return true
-  if (process.env.TF_SPATIAL_RULES_ONLY === '1') return true
+  const flag = process.env.SPATIAL_AI_RULES_ONLY?.trim()
+  if (flag === '1' || flag?.toLowerCase() === 'true') return true
   if (source === 'spatial_lexicon' && label !== 'other' && confidence >= 0.85) {
     return true
   }

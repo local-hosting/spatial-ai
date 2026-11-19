@@ -6,6 +6,7 @@ export { labelToIllocution, replyForLabel } from './spatial/crosswalk.js'
 export { spatialChatRequestSchema } from './spatial/schemas.js'
 export { createSpatialServer, startSpatialServer } from './api/server.js'
 export { loadSpatialConfig, type SpatialServiceConfig } from './api/config.js'
+export { readSpatialAiEnv } from './runtime/read-env.js'
 export type {
   SpatialSession,
   SpatialChatRequest,
