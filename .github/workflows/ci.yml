@@ -63,6 +63,6 @@ jobs:
       - working-directory: ws
         run: yarn install
       - working-directory: ws
-        run: yarn bootstrap:stack && yarn build:geokit && yarn workspace @local-hosting/geotypes build
+        run: yarn bootstrap:stack && yarn build:geokit && yarn build:geotypes
       - working-directory: ws
         run: yarn workspace @local-hosting/spatial-ai ci
