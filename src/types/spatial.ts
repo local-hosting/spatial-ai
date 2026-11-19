@@ -4,10 +4,10 @@ import type {
   ReportType,
   SupportedLanguage,
   Vocabulary,
-} from '@local-hosting/ai'
-import type { EventSummary } from '@local-hosting/ai'
+} from '@local-hosting/local-ai'
+import type { EventSummary } from '@local-hosting/local-ai'
 
-/** Caller session bag — optional; omit for basic (non-spatial) use of `@local-hosting/ai`. */
+/** Caller session bag — optional; omit for basic (non-spatial) use of `@local-hosting/local-ai`. */
 export type SpatialSession = {
   h3_cell?: string
   lat?: number

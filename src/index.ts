@@ -1,5 +1,5 @@
 /** Spatial layer — re-export basic local AI, then spatial helpers. */
-export * from '@local-hosting/ai'
+export * from '@local-hosting/local-ai'
 
 export { placesNear, type PlaceNearHit } from './spatial/places-near.js'
 export { runSpatial, runSpatialChat, type SpatialChatOptions } from './spatial/spatial-chat.js'

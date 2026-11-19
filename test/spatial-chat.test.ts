@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { randomUUID } from 'node:crypto'
-import { demoVocabFixture } from '@local-hosting/ai'
-import type { EventSummary } from '@local-hosting/ai'
+import { demoVocabFixture } from '@local-hosting/local-ai'
+import type { EventSummary } from '@local-hosting/local-ai'
 import { runSpatialChat } from '../src/spatial/spatial-chat.js'
 import { resolveSpatialSession } from '../src/spatial/session-resolve.js'
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { demoVocabFixture } from '@local-hosting/ai'
+import { demoVocabFixture } from '@local-hosting/local-ai'
 import { placesNear } from '../src/spatial/places-near.js'
 import { runSpatial } from '../src/spatial/spatial-chat.js'
 
