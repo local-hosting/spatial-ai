@@ -51,6 +51,3 @@ export type SpatialChatResult = {
   reply: string
   intent?: ComposeIntent
 }
-
-export type SpatialRequest = SpatialChatRequest
-export type SpatialResult = SpatialChatResult

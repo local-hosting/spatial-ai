@@ -103,19 +103,3 @@ export async function runSpatialChat(
     intent,
   }
 }
-
-/** @deprecated use runSpatialChat */
-export function runSpatial(req: SpatialChatRequest): Pick<SpatialChatResult, 'label' | 'place_ids' | 'source' | 'spatial'> {
-  const session = resolveSpatialSession(req.session ?? {})
-  const spatial = Boolean(
-    session.h3_cell || session.geotype || (session.lat != null && session.lon != null),
-  )
-  const mapped = mapQuestionLexicon(req.text, req.lang)
-  const hits = placesNear(req.vocab, session)
-  return {
-    label: mapped.label,
-    place_ids: hits.map((h) => h.id),
-    source: 'spatial_lexicon',
-    spatial,
-  }
-}

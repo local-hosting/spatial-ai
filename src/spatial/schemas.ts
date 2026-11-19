@@ -1,6 +1,9 @@
 import { z } from 'zod'
-import { composeRequestSchema, vocabularySchema } from '@local-hosting/local-ai'
-import { SUPPORTED_LANGUAGES } from '@local-hosting/compose'
+import {
+  SUPPORTED_LANGUAGES,
+  composeRequestSchema,
+  vocabularySchema,
+} from '@local-hosting/local-ai'
 
 const langEnum = z.enum(SUPPORTED_LANGUAGES)
 

@@ -1,7 +1,5 @@
 # Open items (`@local-hosting/spatial-ai`)
 
-- `/spatial` or `/chat` HTTP entry (session h3/lat/lon → placesNear → map short-circuit → rules/compose).
-- Optional `@local-hosting/geokit` for haversine / H3 cell helpers.
-- Optional `@local-hosting/geotypes` `resolveGeotype` (after geotypes lands in local-hosting).
-- Map label → compose illocution crosswalk (`where_to_go` → `query`, etc.).
-- Instance place vocab owner (`P_*`) vs geotype acronyms — link only.
+- Instance place vocab (`P_*`) vs geotype acronyms — keep linked, don’t merge catalogs.
+- Stronger health probe (today `/health` is a static stub; local-ai probes llama/GLiNER).
+- Optional report-label → illocution path (question labels already derive from local-ai `QUESTION_LABELS`).
