@@ -1,12 +1,26 @@
 import http from 'node:http'
 import {
-  assertLoopbackHost,
+  assertAllowedBindHost,
+  buildHealthReport,
+  createLocalAiRouteContext,
+  handleLocalAiRoutes,
+  isAuthorized,
+  manifestVerificationErrors,
   readJsonBody,
   writeJson,
 } from '@local-hosting/local-ai'
 import type { SpatialServiceConfig } from './config.js'
 import { runSpatialChat } from '../spatial/spatial-chat.js'
 import { spatialChatRequestSchema } from '../spatial/schemas.js'
+import { spatialServiceInfoBody } from './spatial-service-info.js'
+import {
+  loadChatUiHtml,
+  requestPrefersHtml,
+  resolveUiStaticGet,
+  writeHtml,
+  writeUiFile,
+} from './static-ui.js'
+import { loadUiMapConfig, uiMapConfigPublicBody } from './ui-map-config.js'
 
 async function handleSpatial(
   body: unknown,
@@ -26,20 +40,64 @@ async function handleSpatial(
 }
 
 export function createSpatialServer(config: SpatialServiceConfig): http.Server {
+  const startupErrors = manifestVerificationErrors()
+  const ctx = createLocalAiRouteContext(startupErrors)
+
   return http.createServer(async (req, res) => {
     if (!req.url || !req.method) {
       writeJson(res, 400, { error: 'bad request' })
       return
     }
 
-    const url = new URL(req.url, `http://${config.host}:${config.port}`)
+    const url = new URL(req.url, `http://${config.bindHost}:${config.port}`)
+
+    if (req.method === 'GET') {
+      if (url.pathname === '/ui/map-config.json') {
+        writeJson(res, 200, uiMapConfigPublicBody(loadUiMapConfig()))
+        return
+      }
+      const uiStatic = resolveUiStaticGet(url.pathname)
+      if (uiStatic) {
+        writeUiFile(res, 200, uiStatic)
+        return
+      }
+      if (url.pathname === '/' && requestPrefersHtml(req)) {
+        try {
+          writeHtml(res, 200, loadChatUiHtml())
+        } catch (e) {
+          writeJson(res, 503, {
+            error: e instanceof Error ? e.message : 'chat UI unavailable',
+          })
+        }
+        return
+      }
+    }
+
+    if (!isAuthorized(req, config.apiKey)) {
+      writeJson(res, 401, { error: 'unauthorized' })
+      return
+    }
+
+    if (req.method === 'GET' && url.pathname === '/') {
+      writeJson(res, 200, spatialServiceInfoBody(config))
+      return
+    }
 
     if (req.method === 'GET' && url.pathname === '/health') {
-      writeJson(res, 200, {
-        ok: true,
-        service: 'spatial-ai',
+      const report = await buildHealthReport({
+        llamaBaseUrl: config.llamaBaseUrl,
+        glinerBaseUrl: config.glinerBaseUrl,
+        loadedVocabVersion: ctx.loadedVocabVersion,
+      })
+      const status = report.llama_reachable ? 200 : 503
+      writeJson(res, status, {
+        ok: report.llama_reachable,
+        service: config.serviceId,
+        version: config.serviceVersion,
         layer: '@local-hosting/spatial-ai',
-        basic_ai: 'http://127.0.0.1:8090',
+        superset: true,
+        ...report,
+        manifest_verification_errors: startupErrors,
       })
       return
     }
@@ -60,15 +118,31 @@ export function createSpatialServer(config: SpatialServiceConfig): http.Server {
       return
     }
 
+    const handled = await handleLocalAiRoutes(req, res, url, config, ctx, {
+      includeRoot: false,
+      includeHealth: false,
+    })
+    if (handled) {
+      return
+    }
+
     writeJson(res, 404, { error: 'not found' })
   })
 }
 
 export function startSpatialServer(config: SpatialServiceConfig): http.Server {
-  assertLoopbackHost(config.host)
+  assertAllowedBindHost(config.bindHost)
+  if (process.env.SPATIAL_AI_ENFORCE_MANIFEST === '1') {
+    const errors = manifestVerificationErrors()
+    if (errors.length > 0) {
+      throw new Error(`manifest verification failed: ${errors.join('; ')}`)
+    }
+  }
   const server = createSpatialServer(config)
-  server.listen(config.port, config.host, () => {
-    console.log(`spatial-ai listening on http://${config.host}:${config.port}`)
+  server.listen(config.port, config.bindHost, () => {
+    console.log(
+      `spatial-ai (local-ai superset) on http://${config.bindHost}:${config.port}`,
+    )
   })
   return server
 }

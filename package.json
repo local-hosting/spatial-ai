@@ -14,26 +14,32 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "rm -rf dist",
+    "build:ui": "vite build --config ui/vite.config.ts",
+    "dev:ui": "vite --config ui/vite.config.ts",
+    "build": "yarn build:ui && tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist ui/dist",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "validate": "yarn typecheck",
     "test": "vitest run",
-    "pretest": "yarn workspace @local-hosting/compose build && yarn workspace @local-hosting/vocab build",
+    "pretest": "yarn workspace @local-hosting/compose build && yarn workspace @local-hosting/vocab build && yarn build:ui",
+    "prestart": "node scripts/ensure-ui-dist.mjs",
     "ci": "yarn test",
     "test:watch": "vitest",
-    "start": "node --import tsx src/api/start-server.ts"
+    "start": "node --import tsx src/api/start-server.ts",
+    "start:boot": "sh runtime/boot.sh"
   },
   "dependencies": {
     "@local-hosting/compose": "0.1.0",
-    "@local-hosting/geokit": "0.4.3",
+    "@local-hosting/geokit": "0.4.4",
     "@local-hosting/geotypes": "0.2.0",
     "@local-hosting/local-ai": "0.1.0",
     "@local-hosting/vocab": "0.1.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.1.17",
     "@types/node": "^22.13.10",
+    "tailwindcss": "^4.1.17",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3",
     "vite": "^8.3.8",
