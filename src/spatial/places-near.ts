@@ -1,5 +1,5 @@
 import { haversineMeters } from '@local-hosting/geokit/core'
-import { h3ToCoordinates } from './geokit-h3.js'
+import { h3ToCoordinates } from '@local-hosting/geokit/h3'
 import type { Vocabulary, VocabPlace } from '@local-hosting/local-ai'
 import type { SpatialSession } from '../types/spatial.js'
 import { resolveSessionGeotype } from './geotype-filter.js'

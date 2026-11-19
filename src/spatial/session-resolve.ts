@@ -1,4 +1,4 @@
-import { coordinatesToH3 } from './geokit-h3.js'
+import { coordinatesToH3 } from '@local-hosting/geokit/h3'
 import type { SpatialSession } from '../types/spatial.js'
 
 /** Fill `h3_cell` from lat/lon when missing (geokit, loopback-local). */

@@ -1,14 +1,11 @@
-import type { QuestionLabel } from '@local-hosting/local-ai'
+import { QUESTION_LABELS, type QuestionLabel } from '@local-hosting/local-ai'
 
 export type SpatialIllocution = 'query' | 'report' | 'other'
 
-const QUERY_LABELS = new Set<QuestionLabel>([
-  'where_to_go',
-  'what_to_do',
-  'how_long',
-  'is_it_safe_for_kids',
-  'is_it_safe_outside',
-])
+/** All map question labels except `other` are query illocutions (from local-ai catalog). */
+const QUERY_LABELS = new Set<QuestionLabel>(
+  QUESTION_LABELS.filter((label) => label !== 'other'),
+)
 
 export function labelToIllocution(label: QuestionLabel | 'other'): SpatialIllocution {
   if (label === 'other') return 'other'
