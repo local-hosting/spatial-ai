@@ -14,8 +14,12 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit -p tsconfig.json",
+    "validate": "yarn typecheck",
     "test": "vitest run",
+    "pretest": "yarn workspace @local-hosting/compose build",
+    "ci": "yarn test",
     "test:watch": "vitest",
     "start": "node --import tsx src/api/start-server.ts"
   },

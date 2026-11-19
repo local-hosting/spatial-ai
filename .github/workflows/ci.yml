@@ -1,0 +1,40 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/workspace
+          path: ws
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/comms
+          path: ws/comms
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/frames
+          path: ws/frames
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/compose
+          path: ws/compose
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/local-ai
+          path: ws/local-ai
+      - uses: actions/checkout@v4
+        with:
+          path: ws/spatial-ai
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - working-directory: ws
+        run: yarn install --ignore-engines
+      - working-directory: ws
+        run: yarn workspace @local-hosting/spatial-ai ci
