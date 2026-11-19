@@ -56,13 +56,15 @@ jobs:
           node-version: ${{ env.TOOLCHAIN_NODE }}
       - name: Enable Yarn
         run: corepack enable && corepack prepare yarn@${{ env.TOOLCHAIN_YARN }} --activate
-      - working-directory: ws/geokit
-        run: yarn install --immutable
-      - working-directory: ws/geotypes
+      - working-directory: ws
         run: yarn install --immutable
       - working-directory: ws
-        run: yarn install
-      - working-directory: ws
-        run: yarn bootstrap:stack && yarn build:geokit && yarn build:geotypes
+        run: yarn bootstrap:stack
+      - name: Build geokit
+        working-directory: ws/geokit
+        run: yarn install --immutable && yarn build
+      - name: Build geotypes
+        working-directory: ws/geotypes
+        run: yarn install --immutable && yarn build
       - working-directory: ws
         run: yarn workspace @local-hosting/spatial-ai ci
