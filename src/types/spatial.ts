@@ -5,6 +5,7 @@ import type {
   SupportedLanguage,
   Vocabulary,
 } from '@local-hosting/local-ai'
+import type { PackMode } from '@local-hosting/compose'
 import type { EventSummary } from '@local-hosting/local-ai'
 
 /** Caller session bag — optional; omit for basic (non-spatial) use of `@local-hosting/local-ai`. */
@@ -27,7 +28,9 @@ export type SpatialComposeOptions = {
 export type SpatialChatRequest = {
   text: string
   lang: SupportedLanguage
-  vocab: Vocabulary
+  vocab?: Vocabulary
+  vocab_tip?: string
+  pack_mode?: PackMode
   session?: SpatialSession
   /** When set, runs compose after map (elevated event). */
   event?: EventSummary

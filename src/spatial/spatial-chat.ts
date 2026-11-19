@@ -8,6 +8,7 @@ import type { SpatialChatRequest, SpatialChatResult, SpatialSource } from '../ty
 import { labelToIllocution, replyForLabel } from './crosswalk.js'
 import { placesNear } from './places-near.js'
 import { resolveSpatialSession } from './session-resolve.js'
+import { resolveSessionVocab } from '@local-hosting/local-ai'
 
 export type SpatialChatOptions = {
   llamaBaseUrl: string
@@ -34,6 +35,9 @@ export async function runSpatialChat(
   req: SpatialChatRequest,
   options: SpatialChatOptions,
 ): Promise<SpatialChatResult> {
+  const vocab = resolveSessionVocab(req)
+  if (!vocab) throw new Error('vocab not available')
+
   const session = resolveSpatialSession(req.session ?? {})
   const spatial = Boolean(
     session.h3_cell || session.geotype || (session.lat != null && session.lon != null),
@@ -54,7 +58,7 @@ export async function runSpatialChat(
     source = 'spatial_map'
   }
 
-  const hits = placesNear(req.vocab, session)
+  const hits = placesNear(vocab, session)
   const place_ids = hits.map((h) => h.id)
 
   let action_ids: string[] = []
@@ -76,7 +80,7 @@ export async function runSpatialChat(
       confidence,
     )
     intent = await compose(
-      { vocab: req.vocab, event },
+      { vocab, event },
       {
         llamaBaseUrl: options.llamaBaseUrl,
         timeoutMs: options.composeTimeoutMs,
