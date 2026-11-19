@@ -1,10 +1,10 @@
 # @local-hosting/spatial-ai
 
-**Local spatial AI** — place-grounded layer on **`@local-hosting/local-ai`**.
+Place-grounded layer on **`@local-hosting/local-ai`**, using **`@local-hosting/geokit`** (H3 / haversine) and **`@local-hosting/geotypes`** (slug filters).
 
 ```text
-apps  →  spatial-ai  →  ai  →  compose  →  wire
-              └─ geokit / geotypes (link, don’t merge)
+apps  →  spatial-ai  →  local-ai  →  compose  →  frames
+              └─ geokit / geotypes (linked, not merged into P_* vocab)
 ```
 
 | Need | Use |
@@ -12,12 +12,14 @@ apps  →  spatial-ai  →  ai  →  compose  →  wire
 | Map + compose only | `@local-hosting/local-ai` |
 | Offline place-grounded chat / near-me | `@local-hosting/spatial-ai` |
 
-Basic inference (llama / GLiNER ports) still runs from **`ai`**. This package serves **`POST /spatial`** and **`POST /chat`** on loopback (`TF_SPATIAL_AI_PORT`, default **8092**).
+Loopback HTTP: **`POST /spatial`** and **`POST /chat`** (`TF_SPATIAL_AI_PORT`, default **8092**). Upstream llama / GLiNER URLs match local-ai.
 
 ## Commands
 
+From the **local-hosting** workspace root:
+
 ```bash
-yarn install
+yarn install --ignore-engines
 yarn workspace @local-hosting/spatial-ai typecheck
 yarn workspace @local-hosting/spatial-ai test
 yarn workspace @local-hosting/spatial-ai start
