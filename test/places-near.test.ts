@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { demoVocabFixture } from '@local-hosting/ai'
 import { placesNear } from '../src/spatial/places-near.js'
-import { runSpatial } from '../src/spatial/run-spatial.js'
+import { runSpatial } from '../src/spatial/spatial-chat.js'
 
 describe('placesNear', () => {
   it('ranks by H3 prefix when session cell is set', () => {
