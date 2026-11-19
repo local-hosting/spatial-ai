@@ -11,7 +11,8 @@
 ```text
 many apps
    ├─ basic  →  @local-hosting/local-ai
-   └─ spatial →  @local-hosting/spatial-ai → ai → compose → wire
+   └─ spatial →  @local-hosting/spatial-ai → local-ai → compose → frames
+                     └─ geokit (H3/haversine) · geotypes (slugs)
 ```
 
 ## Degradation (token ladder)
