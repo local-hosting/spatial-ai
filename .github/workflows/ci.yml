@@ -11,22 +11,27 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/workspace
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
           path: ws
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/comms
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
           path: ws/comms
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/frames
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
           path: ws/frames
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/compose
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
           path: ws/compose
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/local-ai
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
           path: ws/local-ai
       - uses: actions/checkout@v4
         with:
