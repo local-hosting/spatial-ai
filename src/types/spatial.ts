@@ -45,6 +45,8 @@ export type SpatialSource =
 
 export type SpatialChatResult = {
   label: QuestionLabel | ReportType | 'other'
+  /** Question label source before compose (GLiNER overlay vs lexicon). */
+  map_source: 'spatial_map' | 'spatial_lexicon'
   place_ids: string[]
   action_ids: string[]
   source: SpatialSource

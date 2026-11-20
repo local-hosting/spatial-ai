@@ -62,6 +62,7 @@ describe.each(DOMAIN_CORPORA)('runSpatialChat map (%s questions)', (corpusId) =>
         chatOptions,
       )
       expect(result.label).toBeDefined()
+      expect(result.map_source).toMatch(/^spatial_/)
       expect(result.place_ids.length).toBeGreaterThan(0)
       expect(result.intent?.source).toBe('rules_fallback')
     })

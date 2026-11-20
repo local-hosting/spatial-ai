@@ -48,4 +48,27 @@ describe('scorecard recommendation', () => {
     const card = buildScorecard([gemma, flatLift])
     expect(card.rationale.some((r) => r.includes('geo_lift'))).toBe(true)
   })
+
+  it('picks among Qwen-only peers when Gemma is absent', () => {
+    process.env.LOCAL_AI_EVAL_DEVICE_TARGET = 'pi'
+    process.env.LOCAL_AI_EVAL_P95_BUDGET_MS = '3500'
+    const small: ModelEvalHeadline = {
+      model: 'qwen3-0.6b-instruct',
+      geo_rank1_in_compose_pct: 100,
+      action_acceptable_pct: 73.5,
+      p95_compose_latency_ms: 774,
+    }
+    const mid: ModelEvalHeadline = {
+      model: 'qwen2.5-1.5b-instruct',
+      geo_rank1_in_compose_pct: 100,
+      action_acceptable_pct: 73.5,
+      p95_compose_latency_ms: 1595,
+    }
+    const card = buildScorecard([small, mid])
+    expect(card.chosen_composer).toBe('qwen3-0.6b-instruct')
+    expect(card.fallback_composer).toBe('qwen2.5-1.5b-instruct')
+    expect(card.confidence).toBe('medium')
+    delete process.env.LOCAL_AI_EVAL_DEVICE_TARGET
+    delete process.env.LOCAL_AI_EVAL_P95_BUDGET_MS
+  })
 })

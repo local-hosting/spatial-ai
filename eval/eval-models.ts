@@ -1,23 +1,38 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import {
+  composerGgufPath,
+  composerLlamaAlias,
+  listComposerModels,
+  readManifest,
+} from '@local-hosting/local-ai'
 
 export type EvalModelSpec = { name: string; gguf: string; alias: string }
 
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const localAiRoot = path.resolve(repoRoot, '../local-ai')
+/** Compose-only GGUFs derived from `local-ai/models/MANIFEST.json` (single source of truth). */
+export function loadEvalComposeModels(): EvalModelSpec[] {
+  return listComposerModels(readManifest()).map((entry) => ({
+    name: entry.name,
+    gguf: composerGgufPath(entry),
+    alias: composerLlamaAlias(entry),
+  }))
+}
 
-export const EVAL_COMPOSE_MODELS: EvalModelSpec[] = [
-  {
-    name: 'gemma-4-e2b',
-    gguf: path.join(localAiRoot, 'models/gemma-4-e2b-q4_k_m.gguf'),
-    alias: 'gemma-4-e2b',
-  },
-  {
-    name: 'qwen3-1.7b-instruct',
-    gguf: path.join(localAiRoot, 'models/qwen3-1.7b-instruct-q4_k_m.gguf'),
-    alias: 'qwen3-1.7b',
-  },
-]
+/** Snapshot at import — prefer `evalComposeModels()` so env filters apply. */
+export const EVAL_COMPOSE_MODELS: EvalModelSpec[] = loadEvalComposeModels()
+
+/** Optional subset: `LOCAL_AI_EVAL_COMPOSE_MODELS=qwen3-0.6b-instruct,qwen3-1.7b-instruct` */
+export function evalComposeModels(): EvalModelSpec[] {
+  const all = loadEvalComposeModels()
+  const raw = process.env.LOCAL_AI_EVAL_COMPOSE_MODELS?.trim()
+  if (!raw) return all
+  const want = new Set(
+    raw
+      .split(/,\s*/)
+      .map((s) => s.trim())
+      .filter(Boolean),
+  )
+  const picked = all.filter((m) => want.has(m.name))
+  return picked.length > 0 ? picked : all
+}
 
 export function evalCounterfactualEnabled(): boolean {
   return process.env.LOCAL_AI_EVAL_COUNTERFACTUAL === '1'

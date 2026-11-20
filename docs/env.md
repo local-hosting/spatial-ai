@@ -15,7 +15,7 @@ Operational names use **`SPATIAL_AI_`** upstream config uses **`LOCAL_AI_`** (se
 | `SPATIAL_AI_COMPOSE_PLACE_REPAIR` | `0` skips rank-1 place fill for `where_to_go` | on |
 | `SPATIAL_AI_COMPOSE_ACTION_CAP` | Max `action_ids` per actor after repair | `2` |
 
-Compose / map / llama timeouts and URLs come from **`LOCAL_AI_*`** via `loadUpstreamAiConfig`.
+Compose / map / llama timeouts and URLs come from **`LOCAL_AI_*`** via `loadUpstreamAiConfig`. Swap the composer GGUF with **`LOCAL_AI_COMPOSE_MODEL`** (MANIFEST name) — see local-ai [env.md](../../local-ai/docs/env.md) and `yarn workspace @local-hosting/local-ai resolve:composer`.
 
 ## Chat UI map tiles (`GET /ui/map-config.json`)
 

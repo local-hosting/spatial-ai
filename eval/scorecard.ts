@@ -79,6 +79,42 @@ function isGemma(name: string): boolean {
   return name.includes('gemma')
 }
 
+/** Same-family / Qwen-only A/B when gemma+qwen pair is missing. */
+function pickPeerComposers(
+  headlines: ModelEvalHeadline[],
+  p95BudgetMs: number,
+): { chosen: string; fallback: string | null; notes: string[] } | null {
+  if (headlines.length < 2) return null
+  const scored = headlines.map((h) => ({
+    model: h.model,
+    action: num(h.action_acceptable_pct) ?? 0,
+    rank1: rank1Of(h) ?? 0,
+    p95: p95Of(h),
+  }))
+  const withinBudget = scored.filter((s) => s.p95 == null || s.p95 <= p95BudgetMs)
+  const pool = withinBudget.length > 0 ? withinBudget : scored
+  const sorted = [...pool].sort((a, b) => {
+    if (b.action !== a.action) return b.action - a.action
+    if (b.rank1 !== a.rank1) return b.rank1 - a.rank1
+    const ap = a.p95 ?? Number.POSITIVE_INFINITY
+    const bp = b.p95 ?? Number.POSITIVE_INFINITY
+    return ap - bp
+  })
+  const chosen = sorted[0]!
+  const fallback = sorted[1] ?? null
+  const notes = [
+    `Peer pick ${chosen.model} (action ${chosen.action}%, rank1 ${chosen.rank1}%, p95 ${chosen.p95 ?? 'n/a'}ms).`,
+  ]
+  if (withinBudget.length === 0) {
+    notes.push(`No model met p95 budget ${p95BudgetMs}ms; ranking ignored latency floor.`)
+  }
+  return {
+    chosen: chosen.model,
+    fallback: fallback?.model ?? null,
+    notes,
+  }
+}
+
 export function placeOutputStats(
   rowEvals: Array<{ place_ids: string[]; source: string }>,
 ): { places_non_empty_pct: number | null; avg_place_count: number | null; model_rows: number } {
@@ -160,8 +196,19 @@ export function buildScorecard(
   const qwen = active.find((h) => isQwen(h.model))
   const gemma = active.find((h) => isGemma(h.model))
   if (!qwen || !gemma) {
-    rationale.push('Scorecard tie-break expects gemma-* and qwen* result rows.')
-    confidence = 'low'
+    const peer = pickPeerComposers(active, p95_budget_ms)
+    if (peer) {
+      chosen_composer = peer.chosen
+      fallback_composer = peer.fallback
+      confidence = 'medium'
+      rationale.push(
+        'No gemma+qwen pair; picked within-family by action → rank-1 → p95 (budget preferred).',
+      )
+      rationale.push(...peer.notes)
+    } else {
+      rationale.push('Scorecard tie-break expects gemma-* and qwen* result rows.')
+      confidence = 'low'
+    }
     return {
       device_target,
       p95_budget_ms,

@@ -14,7 +14,11 @@ import {
   requiredActionsSatisfied,
 } from './compose-scoring.js'
 import { buildCounterfactualReport } from './counterfactual-report.js'
-import { EVAL_COMPOSE_MODELS, evalCounterfactualEnabled } from './eval-models.js'
+import {
+  evalComposeModels,
+  evalCounterfactualEnabled,
+  type EvalModelSpec,
+} from './eval-models.js'
 import { pairedCompareRows, type PairedRowSlice } from './paired-compare.js'
 import {
   allBenchPlaceIds,
@@ -27,6 +31,8 @@ import {
 } from './resilience-question-bench.js'
 import { buildScorecard, placeOutputStats, type ModelEvalHeadline } from './scorecard.js'
 import { runSpatialChat } from '../src/spatial/spatial-chat.js'
+import { evalBenchCorpusId } from './eval-corpus.js'
+import { loadEvalUpstreamConfig, snapshotEvalUpstream } from './eval-upstream.js'
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
@@ -36,8 +42,10 @@ type SpatialChatRowEval = {
   geo_rank1_id?: string
   map_label: string
   map_label_lexicon: string
+  map_source: string
   map_expected?: string
   map_ok: boolean | null
+  map_used_gliner: boolean
   spatial_place_ids: string[]
   source: string
   picks_geo_rank1: boolean | null
@@ -68,10 +76,10 @@ async function waitHealthy(port: number): Promise<void> {
 }
 
 async function runModel(
-  model: (typeof EVAL_COMPOSE_MODELS)[number],
+  model: EvalModelSpec,
   contexts: ReturnType<typeof buildQuestionContexts>,
   port: number,
-  timeoutMs: number,
+  upstream: ReturnType<typeof loadEvalUpstreamConfig>,
 ): Promise<Record<string, unknown>> {
   if (!existsSync(model.gguf)) {
     return { model: model.name, skipped: true, reason: `missing ${model.gguf}` }
@@ -101,9 +109,10 @@ async function runModel(
 
   const vocab = resilienceBenchVocabulary()
   const llamaBaseUrl = `http://127.0.0.1:${port}`
-  const glinerBaseUrl = process.env.LOCAL_AI_GLINER_BASE_URL ?? 'http://127.0.0.1:1'
+  const { glinerBaseUrl, composeTimeoutMs, mapTimeoutMs } = upstream
 
   let map_ok = 0
+  let map_gliner = 0
   let map_total = 0
   let rank1 = 0
   let model_n = 0
@@ -129,10 +138,13 @@ async function runModel(
       {
         llamaBaseUrl,
         glinerBaseUrl,
-        composeTimeoutMs: timeoutMs,
-        mapTimeoutMs: Number(process.env.LOCAL_AI_MAP_TIMEOUT_MS ?? 500),
+        composeTimeoutMs,
+        mapTimeoutMs,
+        composerName: model.name,
       },
     )
+
+    if (chat.map_source === 'spatial_map') map_gliner += 1
 
     const rubric = deriveComposeRubric(
       vocab,
@@ -173,6 +185,8 @@ async function runModel(
       geo_rank1_id: ctx.geo_rank1_id,
       map_label: chat.label,
       map_label_lexicon: ctx.map_label_detected,
+      map_source: chat.map_source,
+      map_used_gliner: chat.map_source === 'spatial_map',
       map_expected: ctx.row.expected_map_label,
       map_ok: ctx.row.expected_map_label ? chat.label === ctx.row.expected_map_label : null,
       spatial_place_ids: chat.place_ids,
@@ -198,6 +212,7 @@ async function runModel(
   return {
     model: model.name,
     map_label_accuracy_pct: pct(map_ok, map_total),
+    map_gliner_pct: pct(map_gliner, map_total),
     geo_rank1_in_compose_pct: pct(rank1, model_n),
     action_acceptable_pct: pct(action_acceptable_n, model_n),
     required_actions_met_pct: pct(required_met_n, model_n),
@@ -231,13 +246,20 @@ function toPairedSlice(rows: SpatialChatRowEval[]): PairedRowSlice[] {
 async function main(): Promise<void> {
   const max = Number(process.env.LOCAL_AI_EVAL_MAX_ROWS ?? 30)
   const port = Number(process.env.LOCAL_AI_LLAMA_PORT ?? 8080)
-  const timeoutMs = Number(process.env.LOCAL_AI_EVAL_TIMEOUT_MS ?? 60_000)
-  const contexts = buildQuestionContexts(loadBenchQuestions(max))
+  const corpusId = evalBenchCorpusId()
+  const upstream = loadEvalUpstreamConfig()
+  const upstream_snapshot = await snapshotEvalUpstream()
+  if (!upstream_snapshot.gliner_reachable) {
+    console.error(
+      `gliner not reachable at ${upstream.glinerBaseUrl} — eval uses lexicon fallback (${upstream_snapshot.gliner_probe_error ?? 'no /health'})`,
+    )
+  }
+  const contexts = buildQuestionContexts(loadBenchQuestions(max, corpusId))
 
   const results: Record<string, unknown>[] = []
-  for (const model of EVAL_COMPOSE_MODELS) {
+  for (const model of evalComposeModels()) {
     console.error(`\n=== spatial-chat live: ${model.name} ===`)
-    const summary = await runModel(model, contexts, port, timeoutMs)
+    const summary = await runModel(model, contexts, port, upstream)
     results.push(summary)
     const { row_evals, ...headline } = summary
     console.error(JSON.stringify(headline, null, 2))
@@ -265,9 +287,10 @@ async function main(): Promise<void> {
 
   const payload = {
     profile: 'spatial-chat-live',
-    corpus: 'resilience-synthetic',
+    corpus: corpusId,
     path: 'spatial-chat (map label drives action rubric)',
     ran_at: new Date().toISOString(),
+    upstream: upstream_snapshot,
     corpus_baseline: corpusBaseline(contexts),
     paired_compare,
     scorecard: buildScorecard(headlines, paired_compare),

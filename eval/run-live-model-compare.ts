@@ -5,9 +5,10 @@
 import { writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { EVAL_COMPOSE_MODELS, evalCounterfactualEnabled } from './eval-models.js'
+import { evalComposeModels, evalCounterfactualEnabled } from './eval-models.js'
 import { runLiveComposeModel, type LiveComposeRowEval } from './live-compose-model.js'
 import { pairedCompareRows, type PairedRowSlice } from './paired-compare.js'
+import { evalBenchCorpusId } from './eval-corpus.js'
 import {
   buildQuestionContexts,
   corpusBaseline,
@@ -35,11 +36,12 @@ async function main(): Promise<void> {
   const port = Number(process.env.LOCAL_AI_LLAMA_PORT ?? 8080)
   const timeoutMs = Number(process.env.LOCAL_AI_EVAL_TIMEOUT_MS ?? 60_000)
   const counterfactual = evalCounterfactualEnabled()
-  const rows = loadBenchQuestions(max)
+  const corpusId = evalBenchCorpusId()
+  const rows = loadBenchQuestions(max, corpusId)
   const contexts = buildQuestionContexts(rows)
 
   const results: Record<string, unknown>[] = []
-  for (const model of EVAL_COMPOSE_MODELS) {
+  for (const model of evalComposeModels()) {
     console.error(`\n=== live compose: ${model.name} (${rows.length} questions) ===`)
     const summary = await runLiveComposeModel(
       model,
@@ -75,7 +77,7 @@ async function main(): Promise<void> {
 
   const payload = {
     profile: 'live-compare',
-    corpus: 'resilience-synthetic',
+    corpus: corpusId,
     path: 'compose+resident_text+place_ranking',
     ran_at: new Date().toISOString(),
     question_count: rows.length,

@@ -14,6 +14,7 @@ import {
 } from './resilience-eval-vocab.js'
 import { placesNear, type PlaceNearHit } from '../src/spatial/places-near.js'
 import { resolveSpatialSession } from '../src/spatial/session-resolve.js'
+import { evalBenchCorpusId } from './eval-corpus.js'
 
 export const CANDIDATE_ACTION_IDS = ['A_EVAC', 'A_SHELTER', 'A_STAY', 'A_HIGHER'] as const
 
@@ -44,7 +45,7 @@ export type QuestionBenchContext = {
 
 export function loadBenchQuestions(
   max: number,
-  corpusId: MessageCorpusId = 'resilience-synthetic',
+  corpusId: MessageCorpusId = evalBenchCorpusId(),
 ): BenchQuestionRow[] {
   const synthetic = readMessageCorpus(corpusId).messages
   const rows = synthetic

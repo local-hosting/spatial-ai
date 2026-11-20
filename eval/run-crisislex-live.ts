@@ -8,7 +8,7 @@ import { writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { scoreCorpusLexicon } from './corpus-lexicon-slice.js'
-import { EVAL_COMPOSE_MODELS, evalCounterfactualEnabled } from './eval-models.js'
+import { evalComposeModels, evalCounterfactualEnabled } from './eval-models.js'
 import { runLiveComposeModel, type LiveComposeRowEval } from './live-compose-model.js'
 import { pairedCompareRows, type PairedRowSlice } from './paired-compare.js'
 import {
@@ -45,7 +45,7 @@ async function main(): Promise<void> {
   const contexts = buildQuestionContexts(rows)
 
   const results: Record<string, unknown>[] = []
-  for (const model of EVAL_COMPOSE_MODELS) {
+  for (const model of evalComposeModels()) {
     console.error(`\n=== crisislex live compose: ${model.name} (${rows.length} questions) ===`)
     const summary = await runLiveComposeModel(
       model,

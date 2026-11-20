@@ -163,7 +163,12 @@ export async function runLiveComposeModel(
             event: composeEvent,
             question_label: ctx.map_label_detected,
           },
-          { llamaBaseUrl: baseUrl, timeoutMs, rulesOnlyForce: false },
+          {
+            llamaBaseUrl: baseUrl,
+            timeoutMs,
+            rulesOnlyForce: false,
+            composerName: model.name,
+          },
         ),
         ctx.map_label_detected,
         rubric,
@@ -188,7 +193,12 @@ export async function runLiveComposeModel(
             place_ranking: undefined,
             event: buildBenchEvent(ctx, allPlaces),
           },
-          { llamaBaseUrl: baseUrl, timeoutMs, rulesOnlyForce: false },
+          {
+            llamaBaseUrl: baseUrl,
+            timeoutMs,
+            rulesOnlyForce: false,
+            composerName: model.name,
+          },
         )
         const fullPlaces = full.per_actor[0]?.place_ids ?? []
         counterfactual_full_picks_rank1 = fullPlaces.includes(ctx.geo_rank1_id)

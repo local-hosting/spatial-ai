@@ -29,6 +29,8 @@ export type SpatialChatOptions = {
   glinerBaseUrl: string
   composeTimeoutMs: number
   mapTimeoutMs: number
+  /** Pin MANIFEST composer (eval A/B); else LOCAL_AI_COMPOSE_MODEL / chosen_composer. */
+  composerName?: string
 }
 
 function shouldRulesOnlyCompose(
@@ -61,7 +63,7 @@ export async function runSpatialChat(
   const lexicon = mapQuestionLexicon(req.text, req.lang)
   let label: QuestionLabel | 'other' = lexicon.label
   let confidence = lexicon.confidence
-  let source: SpatialSource = 'spatial_lexicon'
+  let mapSource: SpatialChatResult['map_source'] = 'spatial_lexicon'
 
   const mapped = await mapQuestion(req.text, req.lang, {
     baseUrl: options.glinerBaseUrl,
@@ -70,7 +72,7 @@ export async function runSpatialChat(
   if (mapped.confidence >= confidence) {
     label = mapped.label
     confidence = mapped.confidence
-    source = 'spatial_map'
+    mapSource = 'spatial_map'
   }
 
   const hits = placesNear(vocab, session)
@@ -99,7 +101,7 @@ export async function runSpatialChat(
     const composeEvent = narrowEventForLabel(event, rubric)
     const rulesOnly = shouldRulesOnlyCompose(
       req.compose?.rules_only,
-      source,
+      mapSource,
       label,
       confidence,
     )
@@ -116,6 +118,7 @@ export async function runSpatialChat(
           llamaBaseUrl: options.llamaBaseUrl,
           timeoutMs: options.composeTimeoutMs,
           rulesOnlyForce: rulesOnly,
+          composerName: options.composerName,
         },
       ),
       label,
@@ -129,10 +132,11 @@ export async function runSpatialChat(
     ]
   }
 
-  const finalSource: SpatialSource = composeSource ?? source
+  const finalSource: SpatialSource = composeSource ?? mapSource
 
   return {
     label,
+    map_source: mapSource,
     place_ids,
     action_ids,
     source: finalSource,
