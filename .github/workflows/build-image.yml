@@ -1,0 +1,91 @@
+name: Build spatial-ai runtime image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'runtime/**'
+      - 'package.json'
+      - 'yarn.lock'
+      - '.github/workflows/build-image.yml'
+  workflow_dispatch:
+    inputs:
+      deploy_tag:
+        description: 'Also tag ghcr.io/local-hosting/spatial-ai:<tag> (e.g. main)'
+        required: true
+        default: main
+        type: string
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: build-spatial-ai-image-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE_NAME: ghcr.io/local-hosting/spatial-ai
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require build token
+        env:
+          PAT: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+        run: |
+          if [ -z "${PAT}" ]; then
+            echo "::error::Set LOCAL_HOSTING_REPO_TOKEN (clone sibling repos + read GitHub Packages)."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          path: .build/spatial-ai
+
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/vocab
+          ref: main
+          path: .build/vocab
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/local-ai
+          ref: main
+          path: .build/local-ai
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker build and push
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+          BRANCH_TAG: ${{ inputs.deploy_tag || github.ref_name }}
+        run: |
+          set -euo pipefail
+          TAG_SHA="${IMAGE_NAME}:${GITHUB_SHA}"
+          TAG_BRANCH="${IMAGE_NAME}:${BRANCH_TAG}"
+          export DOCKER_BUILDKIT=1
+          docker build \
+            -f .build/spatial-ai/runtime/Dockerfile.ghci \
+            --build-context default=.build/spatial-ai \
+            --build-context vocab=.build/vocab \
+            --build-context local-ai=.build/local-ai \
+            --build-context spatial-ai=.build/spatial-ai \
+            --secret id=NODE_AUTH_TOKEN,env=NODE_AUTH_TOKEN \
+            -t "${TAG_SHA}" \
+            -t "${TAG_BRANCH}" \
+            .build/spatial-ai
+          docker push "${TAG_SHA}"
+          docker push "${TAG_BRANCH}"
+          echo "pushed ${TAG_SHA}"
+          echo "pushed ${TAG_BRANCH}"

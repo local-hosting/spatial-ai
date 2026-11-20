@@ -40,6 +40,11 @@ jobs:
           path: ws/compose
       - uses: actions/checkout@v4
         with:
+          repository: local-hosting/vocab
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+          path: ws/vocab
+      - uses: actions/checkout@v4
+        with:
           repository: local-hosting/local-ai
           token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
           path: ws/local-ai

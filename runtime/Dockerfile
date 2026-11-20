@@ -2,7 +2,8 @@
 # Build context: spatial-ai repo root with local-ai sibling at ../local-ai
 # or vendor copy. Requires YARN_NPM_AUTH_TOKEN for @local-hosting/*.
 
-FROM node:22-bookworm-slim AS build
+# Legacy local build (git clone). Prefer runtime/Dockerfile.ghci + build-image workflow.
+FROM node:26-bookworm-slim AS build
 WORKDIR /build
 ARG LOCAL_AI_GIT_REF=main
 ARG LOCAL_AI_GIT_URL=https://github.com/local-hosting/local-ai.git
@@ -29,7 +30,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends curl ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
-COPY --from=node:22-bookworm-slim /usr/local/bin/node /usr/local/bin/node
+COPY --from=node:26-bookworm-slim /usr/local/bin/node /usr/local/bin/node
 COPY --from=build /build/local-ai /app/local-ai
 COPY --from=build /build/spatial-ai /app/spatial-ai
 
