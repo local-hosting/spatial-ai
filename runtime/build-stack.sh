@@ -28,7 +28,7 @@ pin_portal_dependency() {
 const fs = require('node:fs');
 const [file, dep, rel] = process.argv.slice(2);
 const pkg = JSON.parse(fs.readFileSync(file, 'utf8'));
-for (const section of ['dependencies', 'devDependencies', 'peerDependencies']) {
+for (const section of ['dependencies', 'devDependencies']) {
   if (pkg[section]?.[dep]) {
     pkg[section][dep] = `portal:${rel}`;
   }

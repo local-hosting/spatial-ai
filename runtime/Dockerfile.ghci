@@ -10,6 +10,9 @@ RUN npm install -g corepack \
   && cp /usr/local/lib/node_modules/corepack/dist/lib/corepack.cjs /usr/local/bin/lib/corepack.cjs
 
 FROM node-sidecar AS stack-build
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends git ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 WORKDIR /src
 COPY --from=comms . /src/comms
 COPY --from=frames . /src/frames
