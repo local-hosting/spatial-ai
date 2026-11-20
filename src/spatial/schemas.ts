@@ -17,6 +17,7 @@ const spatialSessionSchema = z.object({
 })
 
 const packModeSchema = z.enum(['daily', 'resilience'])
+const spatialModeSchema = z.enum(['everyday', 'resilience'])
 
 export const spatialChatRequestSchema = z
   .object({
@@ -24,7 +25,9 @@ export const spatialChatRequestSchema = z
     lang: langEnum,
     vocab: vocabularySchema.optional(),
     vocab_tip: z.string().min(1).optional(),
+    mode: spatialModeSchema.optional(),
     pack_mode: packModeSchema.optional(),
+    session_id: z.string().min(1).max(128).optional(),
     session: spatialSessionSchema.optional(),
     event: eventSummarySchema.optional(),
     compose: z
@@ -37,6 +40,7 @@ export const spatialChatRequestSchema = z
     (data) =>
       data.vocab !== undefined ||
       data.vocab_tip !== undefined ||
-      data.pack_mode !== undefined,
-    { message: 'vocab, vocab_tip, or pack_mode required' },
+      data.pack_mode !== undefined ||
+      data.mode !== undefined,
+    { message: 'vocab, vocab_tip, pack_mode, or mode required' },
   )

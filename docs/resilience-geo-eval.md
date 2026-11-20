@@ -9,11 +9,11 @@ Measures whether **session geolocation** (`placesNear` → narrowed `candidate_p
 | `compose/messages/resilience/resilience-synthetic.yaml` | 100 | `yarn workspace @local-hosting/compose messages:resilience:synthetic` |
 | `compose/messages/resilience/resilience-crisislex.yaml` | 100 | `yarn workspace @local-hosting/compose messages:resilience:crisislex` (network) |
 
-Everyday / short resilience sets: `messages/everyday/corpus.yaml`, `messages/resilience/corpus.yaml`.
+Everyday / short resilience sets: `messages/daily/corpus.yaml`, `messages/resilience/corpus.yaml`.
 
-Family spatial live bench (session + geo gold): `messages/everyday/spatial.yaml` (`corpus: everyday-spatial`).
+Family spatial live bench (session + geo gold): `messages/daily/spatial.yaml` (`corpus: everyday-spatial`).
 
-Family/neighbor **reports** (compose-first + lexicon gold): `messages/everyday/reports.yaml` (`corpus: everyday-reports`). Regenerate geo fields:
+Family/neighbor **reports** (compose-first + lexicon gold): `messages/daily/reports.yaml` (`corpus: everyday-reports`). Regenerate geo fields:
 
 ```bash
 yarn workspace @local-hosting/compose messages:everyday:geo

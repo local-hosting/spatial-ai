@@ -1,4 +1,6 @@
 import { readSpatialAiEnv } from '../runtime/read-env.js'
+import { readSessionH3ResolutionCap } from '../spatial/session-h3-policy.js'
+import { readBootH3Cell } from '../spatial/read-boot-h3.js'
 import {
   buildMapProviderPlan,
   mapProviderConfigured,
@@ -51,7 +53,10 @@ export function loadUiMapConfig(env: NodeJS.ProcessEnv = process.env): UiMapConf
   }
 }
 
-export function uiMapConfigPublicBody(config: UiMapConfig): Record<string, unknown> {
+export function uiMapConfigPublicBody(
+  config: UiMapConfig,
+  env: NodeJS.ProcessEnv = process.env,
+): Record<string, unknown> {
   return {
     provider: config.provider,
     fallbackProviders: config.fallbackProviders,
@@ -59,5 +64,7 @@ export function uiMapConfigPublicBody(config: UiMapConfig): Record<string, unkno
     mapboxToken: config.mapboxToken,
     protomapsKey: config.protomapsKey,
     configured: mapProviderConfigured(config),
+    sessionH3Resolution: readSessionH3ResolutionCap(env),
+    bootH3Cell: readBootH3Cell(env),
   }
 }

@@ -69,7 +69,19 @@
           class="w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
         ></textarea>
 
-        <div class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div class="grid grid-cols-2 gap-3 lg:grid-cols-5">
+          <div>
+            <label class="mb-1 block text-xs text-slate-400" for="spatial-mode"
+              >Mode</label
+            >
+            <select
+              id="spatial-mode"
+              class="w-full rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-sm"
+            >
+              <option value="everyday">everyday</option>
+              <option value="resilience" selected>resilience</option>
+            </select>
+          </div>
           <div>
             <label class="mb-1 block text-xs text-slate-400" for="lang"
               >Language</label

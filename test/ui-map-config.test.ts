@@ -10,6 +10,7 @@ describe('loadUiMapConfig', () => {
     )
     expect(body.configured).toBe(false)
     expect(body.fallbackProviders).toEqual([])
+    expect(body.sessionH3Resolution).toBe(7)
   })
 
   it('prefers mapbox when both maptiler and mapbox keys are set', () => {

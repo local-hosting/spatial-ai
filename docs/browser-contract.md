@@ -27,7 +27,9 @@ Browsers pass only what they already have offline:
 }
 ```
 
-Geokit on the host derives `h3_cell` from `lat`/`lon` when omitted.
+Geokit on the host derives `h3_cell` from `lat`/`lon` when omitted, capped at **`SPATIAL_AI_SESSION_H3_RESOLUTION`** (default **7**). Finer client cells are coarsened; lat/lon on the ranking path are snapped to the **cell centroid** (no sub‑cell GPS in `placesNear`).
+
+**Server session anchor (H3-only):** set **`SPATIAL_AI_DEFAULT_H3_CELL`** at boot. Pass optional **`session_id`** on `POST /chat` (or receive one in the response). Each request with geo records a coarsened **H3 observation**; the server **triangulates** (mean centroid → snap) for the next query. Stored state is **H3 indices only**. Boot centroid for the UI: `GET /ui/session-anchor.json`.
 
 ## Chat request
 

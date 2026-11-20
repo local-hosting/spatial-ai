@@ -38,10 +38,19 @@ function readSessionCoords(
   return { lat, lon }
 }
 
+function sessionH3ResolutionFromConfig(config: UiMapConfigResponse): number {
+  const n = config.sessionH3Resolution
+  if (typeof n === 'number' && Number.isFinite(n) && n >= 0 && n <= 15) {
+    return Math.trunc(n)
+  }
+  return 7
+}
+
 function applyCoordsToMapTree(
   tree: SessionMapElements,
   coords: { lat: number; lon: number },
   zoom = DEFAULT_ZOOM,
+  h3Resolution = 7,
 ): void {
   const lat = String(coords.lat)
   const lon = String(coords.lon)
@@ -52,7 +61,7 @@ function applyCoordsToMapTree(
   tree.pointEl.setAttribute('lng', lon)
   tree.h3El.setAttribute('lat', lat)
   tree.h3El.setAttribute('lng', lon)
-  tree.h3El.setAttribute('resolution', '9')
+  tree.h3El.setAttribute('resolution', String(h3Resolution))
   tree.h3El.removeAttribute('h3-index')
   tree.mapEl.flyTo?.(coords.lat, coords.lon, zoom)
 }
@@ -61,6 +70,8 @@ type UiMapConfigResponse = MapProviderKeys & {
   provider: MapProvider
   fallbackProviders?: MapProvider[]
   configured?: boolean
+  /** Server privacy cap for session H3 overlay (matches `resolveSpatialSession`). */
+  sessionH3Resolution?: number
 }
 
 function keysFromViteEnv(): MapProviderKeys {
@@ -217,11 +228,12 @@ function createSessionMapTree(
   pointEl.setAttribute('color', '#38bdf8')
   pointEl.setAttribute('size', '3')
 
+  const h3Res = sessionH3ResolutionFromConfig(config)
   const h3El = document.createElement('gk-h3')
   h3El.id = 'session-h3'
   h3El.setAttribute('lat', lat)
   h3El.setAttribute('lng', lon)
-  h3El.setAttribute('resolution', '9')
+  h3El.setAttribute('resolution', String(h3Res))
   h3El.setAttribute('ring-k', '1')
   h3El.setAttribute('color', '#38bdf8')
   h3El.setAttribute('opacity', '0.12')
@@ -272,7 +284,12 @@ async function mountSessionMapWithFallback(
     if (outcome === 'ready') {
       const coords = readSessionCoords(opts.latEl, opts.lonEl)
       if (coords) {
-        applyCoordsToMapTree(tree, coords, DEFAULT_ZOOM)
+        applyCoordsToMapTree(
+          tree,
+          coords,
+          DEFAULT_ZOOM,
+          sessionH3ResolutionFromConfig(config),
+        )
       }
       if (tried.length > 1) {
         console.info(
@@ -330,6 +347,7 @@ export async function initSessionMap(opts: SessionMapOpts): Promise<{
   }
 
   const { mapEl, pointEl, h3El } = mounted
+  const sessionH3Res = sessionH3ResolutionFromConfig(mapConfig)
 
   const resizeObserver = new ResizeObserver(() => {
     window.dispatchEvent(new Event('resize'))
@@ -339,7 +357,7 @@ export async function initSessionMap(opts: SessionMapOpts): Promise<{
   function syncFromInputs(): void {
     const c = readSessionCoords(opts.latEl, opts.lonEl)
     if (!c) return
-    applyCoordsToMapTree({ mapEl, pointEl, h3El }, c, DEFAULT_ZOOM)
+    applyCoordsToMapTree({ mapEl, pointEl, h3El }, c, DEFAULT_ZOOM, sessionH3Res)
   }
 
   function applyChatLocation(lat: number, lon: number, h3Cell: string | null): void {

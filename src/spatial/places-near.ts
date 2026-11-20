@@ -1,9 +1,16 @@
 import { haversineMeters } from '@local-hosting/geokit/core'
-import { h3ToCoordinates } from '@local-hosting/geokit/h3'
+import {
+  expandH3CellId,
+  h3Neighbors,
+  h3ToCoordinates,
+  normalizeH3CellToResolution,
+} from '@local-hosting/geokit/h3'
 import type { Vocabulary, VocabPlace } from '@local-hosting/local-ai'
 import type { SpatialSession } from '../types/spatial.js'
-import { resolveSessionGeotype } from './geotype-filter.js'
+import { resolveSessionPlaceTypes } from './geotype-place-types.js'
 import { resolveSpatialSession } from './session-resolve.js'
+import { readPlacesRingK } from './vocab-h3-slice.js'
+import { readSessionH3ResolutionCap } from './session-h3-policy.js'
 
 export type PlaceNearHit = {
   id: string
@@ -21,13 +28,46 @@ function sharedH3PrefixLen(a: string, b: string): number {
   return i
 }
 
+function buildDiskRingMap(
+  anchorCell: string,
+  ringK: number,
+  resolution: number,
+): Map<string, number> {
+  const center = normalizeH3CellToResolution(
+    expandH3CellId(anchorCell),
+    resolution,
+  )
+  const disk = h3Neighbors(center, ringK)
+  const rings = new Map<string, number>()
+  for (let i = 0; i < disk.length; i += 1) {
+    const key = normalizeH3CellToResolution(disk[i]!, resolution)
+    if (!rings.has(key)) {
+      rings.set(key, i === 0 ? 0 : 1)
+    }
+  }
+  return rings
+}
+
 function rankPlace(
   place: VocabPlace,
   cell: string | undefined,
   origin: Readonly<[number, number]> | null,
+  diskRings: Map<string, number> | null,
+  resolution: number,
 ): { rank: number; distance_m?: number } {
   let rank = 1000
   let distance_m: number | undefined
+
+  if (diskRings && place.h3) {
+    const placeCell = normalizeH3CellToResolution(
+      expandH3CellId(place.h3),
+      resolution,
+    )
+    const diskRank = diskRings.get(placeCell)
+    if (diskRank != null) {
+      return { rank: diskRank, distance_m: undefined }
+    }
+  }
 
   if (origin) {
     try {
@@ -53,24 +93,39 @@ function rankPlace(
 export function placesNear(
   vocab: Vocabulary,
   session: SpatialSession = {},
+  env: NodeJS.ProcessEnv = process.env,
 ): PlaceNearHit[] {
-  const resolved = resolveSpatialSession(session)
+  const resolved = resolveSpatialSession(session, env)
   const limit = resolved.limit ?? 8
   const cell = resolved.h3_cell?.trim()
-  const geotype = resolveSessionGeotype(resolved)
+  const placeTypes = resolveSessionPlaceTypes(resolved)
+  const resolution = readSessionH3ResolutionCap(env)
+  const ringK = readPlacesRingK(env)
+  const diskRings = cell ? buildDiskRingMap(cell, ringK, resolution) : null
 
   let places: VocabPlace[] = vocab.places
-  if (geotype) {
-    places = places.filter((p) => p.type.toLowerCase() === geotype)
+  if (placeTypes && placeTypes.length > 0) {
+    const allowed = new Set(placeTypes.map((t) => t.toLowerCase()))
+    const filtered = places.filter((p) => allowed.has(p.type.toLowerCase()))
+    if (filtered.length > 0) {
+      places = filtered
+    }
   }
 
+  /** Prefer H3 containment when a session cell exists (privacy-snapped centroids are not GPS). */
   const origin =
-    resolved.lat != null && resolved.lon != null
+    !cell && resolved.lat != null && resolved.lon != null
       ? ([resolved.lat, resolved.lon] as const)
       : null
 
   const scored: PlaceNearHit[] = places.map((p) => {
-    const { rank, distance_m } = rankPlace(p, cell, origin)
+    const { rank, distance_m } = rankPlace(
+      p,
+      cell,
+      origin,
+      diskRings,
+      resolution,
+    )
     return { id: p.id, h3: p.h3, type: p.type, rank, distance_m }
   })
 

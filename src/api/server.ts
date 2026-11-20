@@ -21,25 +21,66 @@ import {
   writeUiFile,
 } from './static-ui.js'
 import { loadUiMapConfig, uiMapConfigPublicBody } from './ui-map-config.js'
+import { uiSessionAnchorPublicBody } from './ui-session-anchor.js'
+import { uiSpatialConfigPublicBody } from './ui-spatial-config.js'
+import { applyRequestSessionAnchor } from '../spatial/apply-request-session-anchor.js'
+import {
+  readSessionObservationsMax,
+  SessionAnchorStore,
+} from '../spatial/session-anchor-store.js'
+import { readBootH3Cell } from '../spatial/read-boot-h3.js'
+import { readRegionH3Cell } from '../spatial/read-region-h3.js'
+import { cachedSpatialHealthReport } from './spatial-health-cache.js'
+
+export type SpatialServerDeps = {
+  sessionAnchor: SessionAnchorStore
+}
+
+export function createSessionAnchorStore(
+  env: NodeJS.ProcessEnv = process.env,
+): SessionAnchorStore {
+  return new SessionAnchorStore(
+    readBootH3Cell(env),
+    readRegionH3Cell(env),
+    readSessionObservationsMax(env),
+  )
+}
 
 async function handleSpatial(
   body: unknown,
   config: SpatialServiceConfig,
+  deps: SpatialServerDeps,
+  loadedVocabVersion: string | null,
 ): Promise<{ status: number; payload: unknown }> {
   const parsed = spatialChatRequestSchema.safeParse(body)
   if (!parsed.success) {
     return { status: 400, payload: { error: 'invalid body', details: parsed.error.flatten() } }
   }
-  const result = await runSpatialChat(parsed.data, {
+  const { request, meta } = applyRequestSessionAnchor(
+    parsed.data,
+    deps.sessionAnchor,
+  )
+  const health = await cachedSpatialHealthReport(config, loadedVocabVersion)
+  const result = await runSpatialChat(request, {
     llamaBaseUrl: config.llamaBaseUrl,
     glinerBaseUrl: config.glinerBaseUrl,
     composeTimeoutMs: config.composeTimeoutMs,
     mapTimeoutMs: config.mapTimeoutMs,
+    llamaReachable: health.llama_reachable,
+    glinerReachable: health.gliner_reachable,
   })
-  return { status: 200, payload: result }
+  return {
+    status: 200,
+    payload: { ...result, session: meta },
+  }
 }
 
-export function createSpatialServer(config: SpatialServiceConfig): http.Server {
+export function createSpatialServer(
+  config: SpatialServiceConfig,
+  deps: SpatialServerDeps = {
+    sessionAnchor: createSessionAnchorStore(),
+  },
+): http.Server {
   const startupErrors = manifestVerificationErrors()
   const ctx = createLocalAiRouteContext(startupErrors)
 
@@ -54,6 +95,14 @@ export function createSpatialServer(config: SpatialServiceConfig): http.Server {
     if (req.method === 'GET') {
       if (url.pathname === '/ui/map-config.json') {
         writeJson(res, 200, uiMapConfigPublicBody(loadUiMapConfig()))
+        return
+      }
+      if (url.pathname === '/ui/session-anchor.json') {
+        writeJson(res, 200, uiSessionAnchorPublicBody())
+        return
+      }
+      if (url.pathname === '/ui/spatial-config.json') {
+        writeJson(res, 200, uiSpatialConfigPublicBody())
         return
       }
       const uiStatic = resolveUiStaticGet(url.pathname)
@@ -108,7 +157,12 @@ export function createSpatialServer(config: SpatialServiceConfig): http.Server {
     ) {
       try {
         const body = await readJsonBody(req)
-        const { status, payload } = await handleSpatial(body, config)
+        const { status, payload } = await handleSpatial(
+          body,
+          config,
+          deps,
+          ctx.loadedVocabVersion,
+        )
         writeJson(res, status, payload)
       } catch (e) {
         writeJson(res, 500, {

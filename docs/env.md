@@ -14,6 +14,20 @@ Operational names use **`SPATIAL_AI_`** upstream config uses **`LOCAL_AI_`** (se
 | `SPATIAL_AI_COMPOSE_POLICY` | `0` disables label narrowing + post-compose repair | on |
 | `SPATIAL_AI_COMPOSE_PLACE_REPAIR` | `0` skips rank-1 place fill for `where_to_go` | on |
 | `SPATIAL_AI_COMPOSE_ACTION_CAP` | Max `action_ids` per actor after repair | `2` |
+| `SPATIAL_AI_SESSION_H3_RESOLUTION` | Max H3 fineness for session / `placesNear` (0–15; **7** ≈ 1.2 km edge) | `7` |
+| `SPATIAL_AI_DEFAULT_H3_CELL` | Local **mesh** boot H3 (alias `SPATIAL_AI_DEFAULT_H3`) | unset |
+| `SPATIAL_AI_REGION_H3_CELL` | Regional prior (alias `SPATIAL_AI_REGION_H3`) | unset |
+| `SPATIAL_AI_REGION_DEFAULT_US` | `1` → US geographic center at region resolution | off |
+| `SPATIAL_AI_REGION_H3_RESOLUTION` | Region cell fineness (default **5**, coarser than session) | `5` |
+| `SPATIAL_AI_SESSION_OBSERVATIONS_MAX` | Max stored H3 observations per `session_id` (triangulation window) | `12` |
+| `SPATIAL_AI_MODE` | Default **`everyday`** or **`resilience`** (UI + API when `mode` omitted) | `everyday` |
+| `SPATIAL_AI_RESILIENCE_AUTO_EVENT` | `0` disables auto `E_FLOOD` event in resilience mode when `event` omitted | on |
+| `SPATIAL_AI_VOCAB_H3_SLICE` | `0` disables anchor k-ring vocab slice before `placesNear` | on |
+| `SPATIAL_AI_PLACES_RING_K` | k-ring for slice + disk ranking (0–3) | `1` |
+| `SPATIAL_AI_LEXICON_FIRST_MAP` | Skip GLiNER when lexicon confidence ≥ 0.85 | on |
+| `SPATIAL_AI_FAST_PATH` | Skip llama when lexicon + geo rank‑1 satisfy rubric | on |
+| `SPATIAL_AI_HEALTH_AUTO_RULES_ONLY` | Force rules compose when llama unreachable | on |
+| `SPATIAL_AI_HEALTH_CACHE_MS` | TTL for cached upstream probes on `POST /chat` | `5000` |
 
 Compose / map / llama timeouts and URLs come from **`LOCAL_AI_*`** via `loadUpstreamAiConfig`. Swap the composer GGUF with **`LOCAL_AI_COMPOSE_MODEL`** (MANIFEST name) — see local-ai [env.md](../../local-ai/docs/env.md) and `yarn workspace @local-hosting/local-ai resolve:composer`.
 

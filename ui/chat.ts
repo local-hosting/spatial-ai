@@ -3,6 +3,7 @@ import { initSessionMap } from './map.js'
 const thread = document.getElementById('thread')
 const form = document.getElementById('composer') as HTMLFormElement | null
 const messageEl = document.getElementById('message') as HTMLTextAreaElement | null
+const modeEl = document.getElementById('spatial-mode') as HTMLSelectElement | null
 const langEl = document.getElementById('lang') as HTMLSelectElement | null
 const latEl = document.getElementById('lat') as HTMLInputElement | null
 const lonEl = document.getElementById('lon') as HTMLInputElement | null
@@ -12,11 +13,56 @@ const sendBtn = document.getElementById('send') as HTMLButtonElement | null
 const healthPill = document.getElementById('health-pill')
 const jsonLink = document.getElementById('json-link')
 
-if (!thread || !form || !messageEl || !langEl || !latEl || !lonEl || !rulesEl || !sendBtn) {
+if (!thread || !form || !messageEl || !modeEl || !langEl || !latEl || !lonEl || !rulesEl || !sendBtn) {
   throw new Error('chat UI markup missing required elements')
 }
 
+const SESSION_ID_KEY = 'spatial_ai_session_id'
+const SPATIAL_MODE_KEY = 'spatial_ai_mode'
+
 let applyChatLocation: (lat: number, lon: number, h3Cell: string | null) => void = () => {}
+let spatialSessionId: string | null =
+  typeof sessionStorage !== 'undefined'
+    ? sessionStorage.getItem(SESSION_ID_KEY)
+    : null
+
+async function loadBootSessionAnchor(): Promise<void> {
+  try {
+    const res = await fetch('/ui/session-anchor.json', { cache: 'no-store' })
+    if (!res.ok) return
+    const data = (await res.json()) as {
+      configured?: boolean
+      lat?: number | null
+      lon?: number | null
+    }
+    if (!data.configured) return
+    if (data.lat != null && Number.isFinite(data.lat)) latEl.value = String(data.lat)
+    if (data.lon != null && Number.isFinite(data.lon)) lonEl.value = String(data.lon)
+  } catch {
+    // loopback offline
+  }
+}
+
+async function loadSpatialModeDefault(): Promise<void> {
+  const stored = sessionStorage.getItem(SPATIAL_MODE_KEY)
+  if (stored === 'everyday' || stored === 'resilience') {
+    modeEl.value = stored
+    return
+  }
+  try {
+    const res = await fetch('/ui/spatial-config.json', { cache: 'no-store' })
+    if (!res.ok) return
+    const data = (await res.json()) as { mode?: string }
+    if (data.mode === 'everyday' || data.mode === 'resilience') {
+      modeEl.value = data.mode
+    }
+  } catch {
+    // offline
+  }
+}
+
+void loadBootSessionAnchor()
+void loadSpatialModeDefault()
 
 void initSessionMap({ latEl, lonEl }).then((map) => {
   applyChatLocation = map.applyChatLocation
@@ -73,9 +119,24 @@ async function refreshHealth(): Promise<void> {
   if (!healthPill) return
   try {
     const res = await fetch('/health')
-    const data = (await res.json()) as { ok?: boolean }
+    const data = (await res.json()) as {
+      ok?: boolean
+      llama_reachable?: boolean
+      gliner_reachable?: boolean
+    }
     const ok = res.ok && data.ok
-    healthPill.textContent = ok ? 'models up' : 'degraded'
+    const llamaUp = data.llama_reachable !== false
+    const glinerUp = data.gliner_reachable === true
+    if (!llamaUp) {
+      rulesEl.checked = true
+    }
+    healthPill.textContent = ok
+      ? glinerUp
+        ? 'models up'
+        : 'lexicon map'
+      : llamaUp
+        ? 'degraded'
+        : 'rules-only'
     healthPill.className = ok
       ? 'shrink-0 rounded-full border border-emerald-800/80 bg-emerald-950 px-3 py-1 text-xs text-emerald-300'
       : 'shrink-0 rounded-full border border-amber-800/80 bg-amber-950 px-3 py-1 text-xs text-amber-200'
@@ -102,13 +163,16 @@ form.addEventListener('submit', async (e) => {
   if (Number.isFinite(lat)) session.lat = lat
   if (Number.isFinite(lon)) session.lon = lon
 
-  const body = {
+  const mode = modeEl.value === 'resilience' ? 'resilience' : 'everyday'
+  sessionStorage.setItem(SPATIAL_MODE_KEY, mode)
+  const body: Record<string, unknown> = {
     text,
     lang: langEl.value,
-    pack_mode: 'daily' as const,
+    mode,
     session,
     compose: { rules_only: rulesEl.checked },
   }
+  if (spatialSessionId) body.session_id = spatialSessionId
 
   bubble(text, 'user')
   messageEl.value = ''
@@ -127,6 +191,7 @@ form.addEventListener('submit', async (e) => {
       source?: string
       h3_cell?: string | null
       reply?: string
+      session?: { session_id?: string; anchor_h3?: string | null }
     }
     if (!res.ok) {
       throw new Error(data.error ?? res.statusText)
@@ -136,6 +201,7 @@ form.addEventListener('submit', async (e) => {
         ? `places: ${data.place_ids!.join(', ')}`
         : 'no places'
     const meta = [
+      (data as { mode?: string }).mode,
       data.label,
       data.source,
       places,
@@ -143,11 +209,17 @@ form.addEventListener('submit', async (e) => {
     ]
       .filter(Boolean)
       .join(' · ')
+    const anchorId = data.session?.session_id
+    if (anchorId) {
+      spatialSessionId = anchorId
+      sessionStorage.setItem(SESSION_ID_KEY, anchorId)
+    }
+    const anchorH3 = data.session?.anchor_h3 ?? data.h3_cell ?? null
     bubble(data.reply ?? '(no reply)', 'assistant', meta)
     const lat = parseFloat(latEl.value)
     const lon = parseFloat(lonEl.value)
     if (Number.isFinite(lat) && Number.isFinite(lon)) {
-      applyChatLocation(lat, lon, data.h3_cell ?? null)
+      applyChatLocation(lat, lon, anchorH3)
     }
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'request failed'
