@@ -26,6 +26,9 @@ concurrency:
 
 env:
   IMAGE_NAME: ghcr.io/local-hosting/spatial-ai
+  TOOLCHAIN_NODE: "26"
+  TOOLCHAIN_YARN: "4.18.1"
+  YARN_NPM_AUTH_TOKEN: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
 
 jobs:
   build-push:
@@ -42,42 +45,55 @@ jobs:
 
       - uses: actions/checkout@v4
         with:
-          path: .build/spatial-ai
-
+          repository: local-hosting/workspace
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+          path: ws
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/comms
-          ref: main
-          path: .build/comms
           token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
-
+          path: ws/comms
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/frames
-          ref: main
-          path: .build/frames
           token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
-
+          path: ws/frames
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/compose
-          ref: main
-          path: .build/compose
           token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
-
+          path: ws/compose
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/vocab
-          ref: main
-          path: .build/vocab
           token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
-
+          path: ws/vocab
       - uses: actions/checkout@v4
         with:
           repository: local-hosting/local-ai
-          ref: main
-          path: .build/local-ai
           token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+          path: ws/local-ai
+      - uses: actions/checkout@v4
+        with:
+          path: ws/spatial-ai
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.TOOLCHAIN_NODE }}
+
+      - name: Enable Yarn
+        run: corepack enable && corepack prepare yarn@${{ env.TOOLCHAIN_YARN }} --activate
+
+      - name: Build stack (same as spatial-ai ci)
+        working-directory: ws
+        run: |
+          set -euo pipefail
+          yarn install --immutable
+          yarn bootstrap:stack
+          yarn workspace @local-hosting/local-ai build
+          yarn workspace @local-hosting/spatial-ai build
+          chmod +x spatial-ai/runtime/boot.sh spatial-ai/runtime/start-gliner.sh spatial-ai/runtime/wait-gliner.sh
+          chmod +x local-ai/runtime/boot.sh local-ai/runtime/start-llama.sh local-ai/runtime/wait-llama.sh
 
       - uses: docker/setup-buildx-action@v3
 
@@ -89,7 +105,6 @@ jobs:
 
       - name: Docker build and push
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
           BRANCH_TAG: ${{ inputs.deploy_tag || github.ref_name }}
         run: |
           set -euo pipefail
@@ -97,18 +112,11 @@ jobs:
           TAG_BRANCH="${IMAGE_NAME}:${BRANCH_TAG}"
           export DOCKER_BUILDKIT=1
           docker build \
-            -f .build/spatial-ai/runtime/Dockerfile.ghci \
-            --build-context default=.build/spatial-ai \
-            --build-context comms=.build/comms \
-            --build-context frames=.build/frames \
-            --build-context compose=.build/compose \
-            --build-context vocab=.build/vocab \
-            --build-context local-ai=.build/local-ai \
-            --build-context spatial-ai=.build/spatial-ai \
-            --secret id=NODE_AUTH_TOKEN,env=NODE_AUTH_TOKEN \
+            -f ws/spatial-ai/runtime/Dockerfile.ghci \
+            --ignorefile ws/spatial-ai/runtime/dockerignore \
             -t "${TAG_SHA}" \
             -t "${TAG_BRANCH}" \
-            .build/spatial-ai
+            ws
           docker push "${TAG_SHA}"
           docker push "${TAG_BRANCH}"
           echo "pushed ${TAG_SHA}"

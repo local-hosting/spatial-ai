@@ -1,32 +1,12 @@
 # syntax=docker/dockerfile:1.6
-# CI: llama-server + Node gateway (local-ai sidecar + spatial-ai). See .github/workflows/build-image.yml.
+# CI: stack is built on the runner (workspace checkout + bootstrap:stack). This file only assembles the image.
+# See .github/workflows/build-image.yml and runtime/build-stack.sh for local builds.
 
 FROM node:26-bookworm-slim AS node-sidecar
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 RUN npm install -g corepack \
   && corepack enable \
-  && corepack prepare yarn@4.18.1 --activate \
-  && mkdir -p /usr/local/bin/lib \
-  && cp /usr/local/lib/node_modules/corepack/dist/lib/corepack.cjs /usr/local/bin/lib/corepack.cjs
-
-FROM node-sidecar AS stack-build
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends git ca-certificates \
-  && rm -rf /var/lib/apt/lists/*
-WORKDIR /src
-COPY --from=comms . /src/comms
-COPY --from=frames . /src/frames
-COPY --from=compose . /src/compose
-COPY --from=vocab . /src/vocab
-COPY --from=local-ai . /src/local-ai
-COPY --from=spatial-ai . /src/spatial-ai
-COPY --from=spatial-ai runtime/build-stack.sh /usr/local/bin/build-runtime-stack.sh
-WORKDIR /src/spatial-ai
-RUN chmod +x /usr/local/bin/build-runtime-stack.sh
-RUN --mount=type=secret,id=NODE_AUTH_TOKEN,required \
-  export YARN_NPM_AUTH_TOKEN="$(cat /run/secrets/NODE_AUTH_TOKEN)" \
-  && corepack prepare yarn@4.18.1 --activate \
-  && build-runtime-stack.sh /src/spatial-ai
+  && corepack prepare yarn@4.18.1 --activate
 
 FROM ghcr.io/ggml-org/llama.cpp:server
 
@@ -35,10 +15,19 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 COPY --from=node-sidecar /usr/local/bin/node /usr/local/bin/node
-COPY --from=stack-build /src/local-ai /app/local-ai
-COPY --from=stack-build /src/spatial-ai /app/spatial-ai
 
-ENV LOCAL_AI_RUNTIME_ROOT=/app/local-ai
+WORKDIR /app/ws
+
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY node_modules ./node_modules
+COPY comms ./comms
+COPY frames ./frames
+COPY compose ./compose
+COPY vocab ./vocab
+COPY local-ai ./local-ai
+COPY spatial-ai ./spatial-ai
+
+ENV LOCAL_AI_RUNTIME_ROOT=/app/ws/local-ai
 ENV LOCAL_AI_BIND_HOST=0.0.0.0
 ENV SPATIAL_AI_BIND_HOST=0.0.0.0
 ENV LOCAL_AI_LLAMA_PORT=11435
@@ -51,10 +40,10 @@ ENV LOCAL_AI_N_PARALLEL=1
 ENV LOCAL_AI_WEIGHTS_MODE=mmap
 ENV SPATIAL_AI_START_GLINER=0
 
-WORKDIR /app/spatial-ai
+WORKDIR /app/ws/spatial-ai
 EXPOSE 11434
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=1200s --retries=5 \
   CMD curl -fsS "http://127.0.0.1:${PORT}/health" >/dev/null || exit 1
 
-CMD ["/bin/sh", "/app/spatial-ai/runtime/boot.sh"]
+CMD ["/bin/sh", "/app/ws/spatial-ai/runtime/boot.sh"]

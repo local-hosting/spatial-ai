@@ -1,0 +1,15 @@
+# Docker build context is the local-hosting workspace root (ws/). Keep only runtime stack paths.
+
+.git
+.github
+.DS_Store
+
+geokit
+geokit-swift
+geotypes
+ui
+tooling
+README.md
+
+**/.git
+**/.github

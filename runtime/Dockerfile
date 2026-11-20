@@ -2,7 +2,7 @@
 # Build context: spatial-ai repo root with local-ai sibling at ../local-ai
 # or vendor copy. Requires YARN_NPM_AUTH_TOKEN for @local-hosting/*.
 
-# Legacy local build (git clone). Prefer runtime/Dockerfile.ghci + build-image workflow.
+# Legacy local build (git clone). Prefer workspace `runtime/build-stack.sh` + `runtime/Dockerfile.ghci` (see build-image workflow).
 FROM node:26-bookworm-slim AS build
 WORKDIR /build
 ARG LOCAL_AI_GIT_REF=main

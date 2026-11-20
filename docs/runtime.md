@@ -36,12 +36,17 @@ Published runtime images use **`SPATIAL_AI_BIND_HOST=0.0.0.0`** and **`PORT=1143
 
 | Artifact | Registry |
 |----------|----------|
-| CI runtime | `ghcr.io/local-hosting/spatial-ai:<git-sha>` and `:main` (workflow **Build spatial-ai runtime image**; clones comms → frames → compose → vocab → local-ai, then `runtime/build-stack.sh`) |
+| CI runtime | `ghcr.io/local-hosting/spatial-ai:<git-sha>` and `:main` (workflow **Build spatial-ai runtime image** — workspace checkout + `yarn bootstrap:stack` + workspace builds, then `runtime/Dockerfile.ghci` copies artifacts) |
 
-Local build from this package root when siblings exist, or use `runtime/Dockerfile` (clones both repos):
+Local image (workspace siblings on disk, same steps as CI):
 
 ```bash
-docker build -f runtime/Dockerfile \
-  --build-arg NODE_AUTH_TOKEN="$GITHUB_TOKEN" \
-  -t spatial-ai .
+# from local-hosting/workspace root (comms, frames, …, spatial-ai as siblings)
+export YARN_NPM_AUTH_TOKEN="$GITHUB_TOKEN"
+./spatial-ai/runtime/build-stack.sh .
+docker build -f spatial-ai/runtime/Dockerfile.ghci \
+  --ignorefile spatial-ai/runtime/dockerignore \
+  -t spatial-ai:local .
 ```
+
+Legacy clone-only build: `runtime/Dockerfile` (git-clones local-ai + spatial-ai; no workspace stack).
