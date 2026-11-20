@@ -11,6 +11,23 @@ fi
 export YARN_NPM_AUTH_TOKEN
 export YARN_ENABLE_HARDENED_MODE=0
 
+pin_portal_dependency() {
+  local pkg_json="$1"
+  local dep="$2"
+  local rel="$3"
+  node - "$pkg_json" "$dep" "$rel" <<'NODE'
+const fs = require('node:fs');
+const [file, dep, rel] = process.argv.slice(2);
+const pkg = JSON.parse(fs.readFileSync(file, 'utf8'));
+for (const section of ['dependencies', 'devDependencies']) {
+  if (pkg[section]?.[dep]) {
+    pkg[section][dep] = `portal:${rel}`;
+  }
+}
+fs.writeFileSync(file, JSON.stringify(pkg, null, 2) + '\n');
+NODE
+}
+
 install_build_prod() {
   local dir="$1"
   (
@@ -26,7 +43,12 @@ install_build_prod() {
 }
 
 install_build_prod "${spatial_root}/../vocab"
+
+pin_portal_dependency "${spatial_root}/../local-ai/package.json" "@local-hosting/vocab" "../vocab"
 install_build_prod "${spatial_root}/../local-ai"
+
+pin_portal_dependency "${spatial_root}/package.json" "@local-hosting/vocab" "../vocab"
+pin_portal_dependency "${spatial_root}/package.json" "@local-hosting/local-ai" "../local-ai"
 install_build_prod "${spatial_root}"
 
 chmod +x "${spatial_root}/runtime/boot.sh" "${spatial_root}/runtime/start-gliner.sh" \
