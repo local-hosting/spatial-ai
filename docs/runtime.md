@@ -36,7 +36,7 @@ Published runtime images use **`SPATIAL_AI_BIND_HOST=0.0.0.0`** and **`PORT=1143
 
 | Artifact | Registry |
 |----------|----------|
-| CI runtime | `ghcr.io/local-hosting/spatial-ai:<git-sha>` and `:main` (workflow **Build spatial-ai runtime image**) |
+| CI runtime | `ghcr.io/local-hosting/spatial-ai:<git-sha>` and `:main` (workflow **Build spatial-ai runtime image**; clones comms → frames → compose → vocab → local-ai, then `runtime/build-stack.sh`) |
 
 Local build from this package root when siblings exist, or use `runtime/Dockerfile` (clones both repos):
 

@@ -11,6 +11,9 @@ RUN npm install -g corepack \
 
 FROM node-sidecar AS stack-build
 WORKDIR /src
+COPY --from=comms . /src/comms
+COPY --from=frames . /src/frames
+COPY --from=compose . /src/compose
 COPY --from=vocab . /src/vocab
 COPY --from=local-ai . /src/local-ai
 COPY --from=spatial-ai . /src/spatial-ai
