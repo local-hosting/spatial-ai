@@ -44,9 +44,8 @@ Local image (workspace siblings on disk, same steps as CI):
 # from local-hosting/workspace root (comms, frames, …, spatial-ai as siblings)
 export YARN_NPM_AUTH_TOKEN="$GITHUB_TOKEN"
 ./spatial-ai/runtime/build-stack.sh .
-docker build -f spatial-ai/runtime/Dockerfile.ghci \
-  --ignorefile spatial-ai/runtime/dockerignore \
-  -t spatial-ai:local .
+cp spatial-ai/runtime/dockerignore .dockerignore
+docker build -f spatial-ai/runtime/Dockerfile.ghci -t spatial-ai:local .
 ```
 
 Legacy clone-only build: `runtime/Dockerfile` (git-clones local-ai + spatial-ai; no workspace stack).

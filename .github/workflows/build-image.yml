@@ -111,9 +111,9 @@ jobs:
           TAG_SHA="${IMAGE_NAME}:${GITHUB_SHA}"
           TAG_BRANCH="${IMAGE_NAME}:${BRANCH_TAG}"
           export DOCKER_BUILDKIT=1
+          cp ws/spatial-ai/runtime/dockerignore ws/.dockerignore
           docker build \
             -f ws/spatial-ai/runtime/Dockerfile.ghci \
-            --ignorefile ws/spatial-ai/runtime/dockerignore \
             -t "${TAG_SHA}" \
             -t "${TAG_BRANCH}" \
             ws
