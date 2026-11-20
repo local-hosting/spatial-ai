@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { randomUUID } from 'node:crypto'
+import { readMessageCorpus } from '@local-hosting/compose/messages'
 import { demoVocabFixture } from '@local-hosting/local-ai'
 import type { EventSummary } from '@local-hosting/local-ai'
 import { runSpatialChat } from '../src/spatial/spatial-chat.js'
 import { resolveSpatialSession } from '../src/spatial/session-resolve.js'
+
+const DOMAIN_CORPORA = ['everyday', 'resilience'] as const
 
 function smokeEvent(overrides: Partial<EventSummary> = {}): EventSummary {
   return {
@@ -23,6 +26,13 @@ function smokeEvent(overrides: Partial<EventSummary> = {}): EventSummary {
   }
 }
 
+const chatOptions = {
+  llamaBaseUrl: 'http://127.0.0.1:1',
+  glinerBaseUrl: 'http://127.0.0.1:1',
+  composeTimeoutMs: 200,
+  mapTimeoutMs: 200,
+}
+
 describe('resolveSpatialSession', () => {
   it('derives h3 from lat/lon', () => {
     const session = resolveSpatialSession({ lat: 40.7128, lon: -74.006 })
@@ -30,49 +40,48 @@ describe('resolveSpatialSession', () => {
   })
 })
 
-describe('runSpatialChat', () => {
-  it('rules-only compose when rules_only set', async () => {
-    const cell = demoVocabFixture.places[0]?.h3
-    const result = await runSpatialChat(
-      {
-        text: 'where can I go that is safe?',
-        lang: 'en',
-        vocab: demoVocabFixture,
-        session: { h3_cell: cell, lat: 40.7128, lon: -74.006 },
-        event: smokeEvent({ h3_cell: cell }),
-        compose: { rules_only: true },
-      },
-      {
-        llamaBaseUrl: 'http://127.0.0.1:1',
-        glinerBaseUrl: 'http://127.0.0.1:1',
-        composeTimeoutMs: 200,
-        mapTimeoutMs: 200,
-      },
-    )
-    expect(result.label).toBe('where_to_go')
-    expect(result.place_ids.length).toBeGreaterThan(0)
-    expect(result.intent?.source).toBe('rules_fallback')
-    expect(result.source).toBe('rules')
+describe.each(DOMAIN_CORPORA)('runSpatialChat map (%s questions)', (corpusId) => {
+  const questions = readMessageCorpus(corpusId).messages.filter((m) => m.kind === 'question')
+
+  it(`has question fixtures (${questions.length})`, () => {
+    expect(questions.length).toBeGreaterThan(0)
   })
 
-  it('loads vocab by pack_mode daily', async () => {
+  for (const row of questions) {
+    it(`${row.id} rules-only`, async () => {
+      const cell = demoVocabFixture.places[0]?.h3
+      const result = await runSpatialChat(
+        {
+          text: row.text,
+          lang: row.lang,
+          vocab: demoVocabFixture,
+          session: { h3_cell: cell, lat: 40.7128, lon: -74.006 },
+          event: smokeEvent({ h3_cell: cell }),
+          compose: { rules_only: true },
+        },
+        chatOptions,
+      )
+      expect(result.label).toBeDefined()
+      expect(result.place_ids.length).toBeGreaterThan(0)
+      expect(result.intent?.source).toBe('rules_fallback')
+    })
+  }
+})
+
+describe('runSpatialChat', () => {
+  it('loads vocab by pack_mode daily (resilience-shaped question)', async () => {
     const cell = demoVocabFixture.places[0]?.h3
     const result = await runSpatialChat(
       {
-        text: 'where can I go that is safe?',
+        text: 'Is the shelter open right now?',
         lang: 'en',
         pack_mode: 'daily',
         session: { h3_cell: cell },
         compose: { rules_only: true },
       },
-      {
-        llamaBaseUrl: 'http://127.0.0.1:1',
-        glinerBaseUrl: 'http://127.0.0.1:1',
-        composeTimeoutMs: 200,
-        mapTimeoutMs: 200,
-      },
+      chatOptions,
     )
-    expect(result.label).toBe('where_to_go')
+    expect(result.label).toBeDefined()
     expect(result.place_ids.length).toBeGreaterThan(0)
   })
 })

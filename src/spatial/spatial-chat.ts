@@ -6,9 +6,23 @@ import {
 } from '@local-hosting/local-ai'
 import type { SpatialChatRequest, SpatialChatResult, SpatialSource } from '../types/spatial.js'
 import { labelToIllocution, replyForLabel } from './crosswalk.js'
-import { placesNear } from './places-near.js'
+import { placesNear, type PlaceNearHit } from './places-near.js'
 import { resolveSpatialSession } from './session-resolve.js'
 import { resolveSessionVocab } from '@local-hosting/local-ai'
+import {
+  applyIntentComposePolicy,
+  narrowEventForLabel,
+} from './compose-policy.js'
+import { deriveComposeRubric } from './compose-rubric.js'
+
+function rankingHints(hits: PlaceNearHit[]) {
+  return hits.slice(0, 8).map((h, i) => ({
+    id: h.id,
+    rank: i + 1,
+    distance_m: h.distance_m,
+    type: h.type,
+  }))
+}
 
 export type SpatialChatOptions = {
   llamaBaseUrl: string
@@ -74,19 +88,40 @@ export async function runSpatialChat(
         ...new Set([...place_ids, ...req.event.candidate_place_ids]),
       ],
     }
+    const rubric = deriveComposeRubric(
+      vocab,
+      req.event.event_ref,
+      req.event.band,
+      req.event.candidate_action_ids,
+      label,
+    )
+    const geoTop = hits.slice(0, 8).map((h) => h.id)
+    const composeEvent = narrowEventForLabel(event, rubric)
     const rulesOnly = shouldRulesOnlyCompose(
       req.compose?.rules_only,
       source,
       label,
       confidence,
     )
-    intent = await compose(
-      { vocab, event },
-      {
-        llamaBaseUrl: options.llamaBaseUrl,
-        timeoutMs: options.composeTimeoutMs,
-        rulesOnlyForce: rulesOnly,
-      },
+    intent = applyIntentComposePolicy(
+      await compose(
+        {
+          vocab,
+          event: composeEvent,
+          resident_text: req.text,
+          place_ranking: rankingHints(hits),
+          question_label: label,
+        },
+        {
+          llamaBaseUrl: options.llamaBaseUrl,
+          timeoutMs: options.composeTimeoutMs,
+          rulesOnlyForce: rulesOnly,
+        },
+      ),
+      label,
+      rubric,
+      hits[0]?.id,
+      geoTop,
     )
     composeSource = intent.source === 'rules_fallback' ? 'rules' : 'model'
     action_ids = [

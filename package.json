@@ -26,7 +26,12 @@
     "ci": "yarn test",
     "test:watch": "vitest",
     "start": "node --import tsx src/api/start-server.ts",
-    "start:boot": "sh runtime/boot.sh"
+    "start:boot": "sh runtime/boot.sh",
+    "eval:geo": "yarn workspace @local-hosting/compose build && node --import tsx eval/run-geo-token-eval.ts",
+    "eval:models:live": "yarn workspace @local-hosting/compose build && node --import tsx eval/run-live-model-compare.ts",
+    "eval:spatial-chat:live": "yarn workspace @local-hosting/compose build && node --import tsx eval/run-spatial-chat-live.ts",
+    "eval:crisislex-live": "yarn workspace @local-hosting/compose build && node --import tsx eval/run-crisislex-live.ts",
+    "eval:show-translations": "yarn workspace @local-hosting/compose build && node --import tsx eval/show-meaningful-translations.ts"
   },
   "dependencies": {
     "@local-hosting/compose": "0.1.0",

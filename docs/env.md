@@ -11,6 +11,9 @@ Operational names use **`SPATIAL_AI_`** upstream config uses **`LOCAL_AI_`** (se
 | `SPATIAL_AI_VERSION` | `GET /` metadata | package version |
 | `SPATIAL_AI_API_KEY` | Gateway Bearer auth | unset (open) |
 | `SPATIAL_AI_RULES_ONLY` | `1` forces compose rules path | unset |
+| `SPATIAL_AI_COMPOSE_POLICY` | `0` disables label narrowing + post-compose repair | on |
+| `SPATIAL_AI_COMPOSE_PLACE_REPAIR` | `0` skips rank-1 place fill for `where_to_go` | on |
+| `SPATIAL_AI_COMPOSE_ACTION_CAP` | Max `action_ids` per actor after repair | `2` |
 
 Compose / map / llama timeouts and URLs come from **`LOCAL_AI_*`** via `loadUpstreamAiConfig`.
 
