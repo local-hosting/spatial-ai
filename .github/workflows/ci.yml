@@ -51,6 +51,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: ws/spatial-ai
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/spool
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+          path: ws/spool
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.TOOLCHAIN_NODE }}
