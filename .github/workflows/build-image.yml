@@ -76,6 +76,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: ws/spatial-ai
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/spool
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+          path: ws/spool
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/geokit
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+          path: ws/geokit
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/geotypes
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+          path: ws/geotypes
 
       - uses: actions/setup-node@v4
         with:
@@ -90,6 +105,7 @@ jobs:
           set -euo pipefail
           yarn install --immutable
           yarn bootstrap:stack
+          yarn build:geokit && yarn build:geotypes
           yarn workspace @local-hosting/local-ai build
           yarn workspace @local-hosting/spatial-ai build
           chmod +x spatial-ai/runtime/boot.sh spatial-ai/runtime/start-gliner.sh spatial-ai/runtime/wait-gliner.sh \
