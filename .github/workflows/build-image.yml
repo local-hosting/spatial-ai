@@ -29,6 +29,8 @@ env:
   TOOLCHAIN_NODE: "26"
   TOOLCHAIN_YARN: "4.18.1"
   YARN_NPM_AUTH_TOKEN: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+  # Match stack ci: skip rocksdb/deasync native builds (fail on Node 26 runners).
+  YARN_ENABLE_SCRIPTS: "false"
 
 jobs:
   build-push:
