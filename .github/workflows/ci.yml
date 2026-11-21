@@ -79,4 +79,6 @@ jobs:
       - working-directory: ws
         run: yarn build:geokit && yarn build:geotypes
       - working-directory: ws
+        run: yarn workspace @local-hosting/spatial-ai build:ui
+      - working-directory: ws
         run: yarn workspace @local-hosting/spatial-ai ci
