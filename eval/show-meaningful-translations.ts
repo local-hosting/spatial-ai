@@ -135,8 +135,8 @@ async function main(): Promise<void> {
     console.log(JSON.stringify(out, null, 2))
   }
 
-  printSection('CrisisLex social text → map + composeWords')
-  for (const row of readMessageCorpus('resilience-crisislex').messages.slice(0, 3)) {
+  printSection('Resilience-social text → map + composeWords')
+  for (const row of readMessageCorpus('resilience-social').messages.slice(0, 3)) {
     console.log(
       JSON.stringify(
         {

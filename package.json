@@ -31,7 +31,7 @@
     "eval:models:live": "yarn workspace @local-hosting/compose build && node --import tsx eval/run-live-model-compare.ts",
     "eval:spatial-chat:live": "yarn workspace @local-hosting/compose build && node --import tsx eval/run-spatial-chat-live.ts",
     "eval:everyday-spatial:live": "yarn workspace @local-hosting/compose build && LOCAL_AI_EVAL_CORPUS=everyday-spatial node --import tsx eval/run-spatial-chat-live.ts",
-    "eval:crisislex-live": "yarn workspace @local-hosting/compose build && node --import tsx eval/run-crisislex-live.ts",
+    "eval:resilience-social-live": "yarn workspace @local-hosting/compose build && node --import tsx eval/run-resilience-social-live.ts",
     "eval:show-translations": "yarn workspace @local-hosting/compose build && node --import tsx eval/show-meaningful-translations.ts"
   },
   "dependencies": {

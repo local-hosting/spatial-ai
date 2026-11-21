@@ -2,7 +2,7 @@ import type { MessageCorpusId } from '@local-hosting/compose/messages'
 
 const BENCH_CORPORA: MessageCorpusId[] = [
   'resilience-synthetic',
-  'resilience-crisislex',
+  'resilience-social',
   'everyday-spatial',
 ]
 

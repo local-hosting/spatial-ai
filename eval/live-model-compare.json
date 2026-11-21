@@ -1,0 +1,1843 @@
+{
+  "profile": "live-compare",
+  "corpus": "resilience-synthetic",
+  "path": "compose+resident_text+place_ranking",
+  "ran_at": "2026-11-20T04:28:09.506Z",
+  "question_count": 34,
+  "counterfactual_requested": false,
+  "corpus_baseline": {
+    "question_rows": 34,
+    "geo_rank1_resolved_pct": 100,
+    "map_label_lexicon_accuracy_pct": 100,
+    "note": "Geo rank-1 comes from placesNear at annotation time; lexicon is model-independent."
+  },
+  "paired_compare": {
+    "left_model": "gemma-4-e2b",
+    "right_model": "qwen3-1.7b-instruct",
+    "identical_output_rows": 14,
+    "place_hit_both": 31,
+    "place_hit_left_only": 3,
+    "place_hit_right_only": 0,
+    "place_hit_neither": 0,
+    "action_acceptable_both": 31,
+    "action_acceptable_left_only": 3,
+    "action_acceptable_right_only": 0,
+    "geo_place_subset_both": 0
+  },
+  "scorecard": {
+    "device_target": "pi",
+    "p95_budget_ms": 3500,
+    "weights": {
+      "geo_lift_rank1_pts": 2,
+      "geo_rank1_pct": 3,
+      "action_acceptable_pct": 2,
+      "p95_latency_ms": 3
+    },
+    "chosen_composer": null,
+    "fallback_composer": null,
+    "confidence": "insufficient_data",
+    "rationale": [
+      "Metrics too close for automatic tie-break; review row_evals and counterfactual lift."
+    ],
+    "tie_break": {
+      "action_edge_pp": 15,
+      "rank1_edge_pp": 20,
+      "rank1_similar_pp": 10
+    },
+    "models": [
+      {
+        "model": "gemma-4-e2b",
+        "geo_rank1_pct": 100,
+        "action_acceptable_pct": 100,
+        "p95_ms": 2706,
+        "geo_lift_rank1_pts": null,
+        "places_non_empty_pct": 100,
+        "avg_place_count": 1.1
+      },
+      {
+        "model": "qwen3-1.7b-instruct",
+        "geo_rank1_pct": 100,
+        "action_acceptable_pct": 100,
+        "p95_ms": 1842,
+        "geo_lift_rank1_pts": null,
+        "places_non_empty_pct": 100,
+        "avg_place_count": 1.1
+      }
+    ],
+    "paired_compare": {
+      "left_model": "gemma-4-e2b",
+      "right_model": "qwen3-1.7b-instruct",
+      "identical_output_rows": 14,
+      "place_hit_both": 31,
+      "place_hit_left_only": 3,
+      "place_hit_right_only": 0,
+      "place_hit_neither": 0,
+      "action_acceptable_both": 31,
+      "action_acceptable_left_only": 3,
+      "action_acceptable_right_only": 0,
+      "geo_place_subset_both": 0
+    }
+  },
+  "results": [
+    {
+      "model": "gemma-4-e2b",
+      "gguf": "gemma-4-e2b-q4_k_m.gguf",
+      "rows": 34,
+      "schema_valid_model": 34,
+      "compose_rules_fallback": 0,
+      "compose_failed": 0,
+      "schema_valid_rate_pct": 100,
+      "action_acceptable_pct": 100,
+      "required_actions_met_pct": 100,
+      "geo_rank1_in_output_pct": 100,
+      "geo_top2_in_output_pct": 100,
+      "must_include_place_pct": 100,
+      "counterfactual": {
+        "enabled": false,
+        "hint": "Set LOCAL_AI_EVAL_COUNTERFACTUAL=1 to compare geo-narrow vs full-vocab rank-1."
+      },
+      "places_non_empty_pct": 100,
+      "avg_place_count": 1.1,
+      "model_rows": 34,
+      "avg_latency_ms": 2069,
+      "p50_latency_ms": 2128,
+      "p95_latency_ms": 2706
+    },
+    {
+      "model": "qwen3-1.7b-instruct",
+      "gguf": "qwen3-1.7b-instruct-q4_k_m.gguf",
+      "rows": 34,
+      "schema_valid_model": 31,
+      "compose_rules_fallback": 3,
+      "compose_failed": 0,
+      "schema_valid_rate_pct": 91.2,
+      "action_acceptable_pct": 100,
+      "required_actions_met_pct": 100,
+      "geo_rank1_in_output_pct": 100,
+      "geo_top2_in_output_pct": 100,
+      "must_include_place_pct": 100,
+      "counterfactual": {
+        "enabled": false,
+        "hint": "Set LOCAL_AI_EVAL_COUNTERFACTUAL=1 to compare geo-narrow vs full-vocab rank-1."
+      },
+      "places_non_empty_pct": 100,
+      "avg_place_count": 1.1,
+      "model_rows": 31,
+      "avg_latency_ms": 1445,
+      "p50_latency_ms": 1379,
+      "p95_latency_ms": 1842
+    }
+  ],
+  "detail": [
+    {
+      "model": "gemma-4-e2b",
+      "row_evals": [
+        {
+          "id": "msg_001",
+          "text": "Where is the nearest shelter open right now?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2188,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_004",
+          "text": "How long will this smoke last?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1893,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_007",
+          "text": "¿Dónde hay refugio cerca?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2184,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_010",
+          "text": "C'est safe dehors pour les enfants?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1704,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_013",
+          "text": "flash flood warning — should we leave?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "what_to_do",
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ],
+          "source": "model",
+          "latency_ms": 1901,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER",
+            "A_EVAC"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_016",
+          "text": "Can I drive through the water on 3rd?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "is_it_safe_outside",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1973,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_019",
+          "text": "Où est le refuge le plus proche?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2155,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_022",
+          "text": "Any open evacuation center near me?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2193,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_025",
+          "text": "Is it safe for kids outside?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 2625,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_028",
+          "text": "¿Cuánto durará la alerta?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1879,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_031",
+          "text": "Where is the nearest shelter open right now?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2128,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_034",
+          "text": "How long will this smoke last?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1862,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_037",
+          "text": "¿Dónde hay refugio cerca?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2203,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_040",
+          "text": "C'est safe dehors pour les enfants?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1709,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_043",
+          "text": "flash flood warning — should we leave?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "what_to_do",
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ],
+          "source": "model",
+          "latency_ms": 1908,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER",
+            "A_EVAC"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_046",
+          "text": "Can I drive through the water on 3rd?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "is_it_safe_outside",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1997,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_049",
+          "text": "Où est le refuge le plus proche?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2183,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_052",
+          "text": "Any open evacuation center near me?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2182,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_055",
+          "text": "Is it safe for kids outside?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 2706,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_058",
+          "text": "¿Cuánto durará la alerta?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1904,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_061",
+          "text": "Where is the nearest shelter open right now?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2136,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_064",
+          "text": "How long will this smoke last?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1914,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_067",
+          "text": "¿Dónde hay refugio cerca?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2163,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_070",
+          "text": "C'est safe dehors pour les enfants?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1742,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_073",
+          "text": "flash flood warning — should we leave?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "what_to_do",
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ],
+          "source": "model",
+          "latency_ms": 1907,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER",
+            "A_EVAC"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_076",
+          "text": "Can I drive through the water on 3rd?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "is_it_safe_outside",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1980,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_079",
+          "text": "Où est le refuge le plus proche?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2177,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_082",
+          "text": "Any open evacuation center near me?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2148,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_085",
+          "text": "Is it safe for kids outside?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 2800,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_088",
+          "text": "¿Cuánto durará la alerta?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1950,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_091",
+          "text": "Where is the nearest shelter open right now?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2167,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_094",
+          "text": "How long will this smoke last?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1781,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_097",
+          "text": "¿Dónde hay refugio cerca?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 2246,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_100",
+          "text": "C'est safe dehors pour les enfants?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1765,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        }
+      ]
+    },
+    {
+      "model": "qwen3-1.7b-instruct",
+      "row_evals": [
+        {
+          "id": "msg_001",
+          "text": "Where is the nearest shelter open right now?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1367,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_004",
+          "text": "How long will this smoke last?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "rules_fallback",
+          "latency_ms": 1842,
+          "picks_geo_rank1": null,
+          "picks_geo_top2": null,
+          "must_include_places_met": null,
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY"
+          ],
+          "place_ids": []
+        },
+        {
+          "id": "msg_007",
+          "text": "¿Dónde hay refugio cerca?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1478,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER",
+            "A_HIGHER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_010",
+          "text": "C'est safe dehors pour les enfants?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1379,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_013",
+          "text": "flash flood warning — should we leave?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "what_to_do",
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ],
+          "source": "model",
+          "latency_ms": 1488,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER",
+            "A_HIGHER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_016",
+          "text": "Can I drive through the water on 3rd?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "is_it_safe_outside",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1345,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_019",
+          "text": "Où est le refuge le plus proche?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1398,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_022",
+          "text": "Any open evacuation center near me?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1603,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER",
+            "A_EVAC"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_025",
+          "text": "Is it safe for kids outside?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "rules_fallback",
+          "latency_ms": 1724,
+          "picks_geo_rank1": null,
+          "picks_geo_top2": null,
+          "must_include_places_met": null,
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY"
+          ],
+          "place_ids": []
+        },
+        {
+          "id": "msg_028",
+          "text": "¿Cuánto durará la alerta?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1341,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_031",
+          "text": "Where is the nearest shelter open right now?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1326,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_034",
+          "text": "How long will this smoke last?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1279,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_037",
+          "text": "¿Dónde hay refugio cerca?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1404,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_040",
+          "text": "C'est safe dehors pour les enfants?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1358,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_043",
+          "text": "flash flood warning — should we leave?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "what_to_do",
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ],
+          "source": "model",
+          "latency_ms": 1491,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER",
+            "A_HIGHER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_046",
+          "text": "Can I drive through the water on 3rd?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "is_it_safe_outside",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1310,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_049",
+          "text": "Où est le refuge le plus proche?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1439,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_052",
+          "text": "Any open evacuation center near me?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1842,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER",
+            "A_EVAC"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_055",
+          "text": "Is it safe for kids outside?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "rules_fallback",
+          "latency_ms": 1783,
+          "picks_geo_rank1": null,
+          "picks_geo_top2": null,
+          "must_include_places_met": null,
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY"
+          ],
+          "place_ids": []
+        },
+        {
+          "id": "msg_058",
+          "text": "¿Cuánto durará la alerta?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1347,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_061",
+          "text": "Where is the nearest shelter open right now?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1325,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_064",
+          "text": "How long will this smoke last?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1270,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_067",
+          "text": "¿Dónde hay refugio cerca?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1550,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER",
+            "A_EVAC"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_070",
+          "text": "C'est safe dehors pour les enfants?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1357,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_073",
+          "text": "flash flood warning — should we leave?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "what_to_do",
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ],
+          "source": "model",
+          "latency_ms": 1484,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER",
+            "A_HIGHER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_076",
+          "text": "Can I drive through the water on 3rd?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "is_it_safe_outside",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1320,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_079",
+          "text": "Où est le refuge le plus proche?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1401,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_082",
+          "text": "Any open evacuation center near me?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1840,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER",
+            "A_EVAC"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_085",
+          "text": "Is it safe for kids outside?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1349,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_088",
+          "text": "¿Cuánto durará la alerta?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1341,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_091",
+          "text": "Where is the nearest shelter open right now?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1342,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "msg_094",
+          "text": "How long will this smoke last?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "how_long",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1267,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_097",
+          "text": "¿Dónde hay refugio cerca?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "where_to_go",
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ],
+          "source": "model",
+          "latency_ms": 1402,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        },
+        {
+          "id": "msg_100",
+          "text": "C'est safe dehors pour les enfants?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "is_it_safe_for_kids",
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1352,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_08"
+          ]
+        }
+      ]
+    }
+  ]
+}

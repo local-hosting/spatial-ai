@@ -1,7 +1,7 @@
 /**
- * CrisisLex generalization: lexicon slice (all rows) + live compose on questions.
+ * Resilience-social generalization: lexicon slice (all rows) + live compose on questions.
  *
- *   yarn workspace @local-hosting/spatial-ai eval:crisislex-live
+ *   yarn workspace @local-hosting/spatial-ai eval:resilience-social-live
  *   LOCAL_AI_EVAL_COUNTERFACTUAL=1 LOCAL_AI_EVAL_MAX_ROWS=15 …
  */
 import { writeFileSync } from 'node:fs'
@@ -34,19 +34,23 @@ function toPairedSlice(rows: LiveComposeRowEval[]): PairedRowSlice[] {
 }
 
 async function main(): Promise<void> {
-  const lexiconMax = Number(process.env.LOCAL_AI_EVAL_CRISISLEX_LEX_ROWS ?? 200)
+  const lexiconMax = Number(
+    process.env.LOCAL_AI_EVAL_SOCIAL_LEX_ROWS ??
+      process.env.LOCAL_AI_EVAL_CRISISLEX_LEX_ROWS ??
+      200,
+  )
   const questionMax = Number(process.env.LOCAL_AI_EVAL_MAX_ROWS ?? 15)
   const port = Number(process.env.LOCAL_AI_LLAMA_PORT ?? 8080)
   const timeoutMs = Number(process.env.LOCAL_AI_EVAL_TIMEOUT_MS ?? 60_000)
   const counterfactual = evalCounterfactualEnabled()
 
-  const lexicon = scoreCorpusLexicon('resilience-crisislex', lexiconMax)
-  const rows = loadBenchQuestions(questionMax, 'resilience-crisislex')
+  const lexicon = scoreCorpusLexicon('resilience-social', lexiconMax)
+  const rows = loadBenchQuestions(questionMax, 'resilience-social')
   const contexts = buildQuestionContexts(rows)
 
   const results: Record<string, unknown>[] = []
   for (const model of evalComposeModels()) {
-    console.error(`\n=== crisislex live compose: ${model.name} (${rows.length} questions) ===`)
+    console.error(`\n=== resilience-social live compose: ${model.name} (${rows.length} questions) ===`)
     const summary = await runLiveComposeModel(
       model,
       contexts,
@@ -80,8 +84,8 @@ async function main(): Promise<void> {
   })
 
   const payload = {
-    profile: 'crisislex-live',
-    corpus: 'resilience-crisislex',
+    profile: 'resilience-social-live',
+    corpus: 'resilience-social',
     path: 'lexicon-slice + compose+resident_text+place_ranking',
     ran_at: new Date().toISOString(),
     question_count: rows.length,
@@ -94,7 +98,7 @@ async function main(): Promise<void> {
     detail: results.map((r) => ({ model: r.model, row_evals: r.row_evals })),
   }
 
-  const outPath = path.join(repoRoot, 'eval', 'crisislex-live.json')
+  const outPath = path.join(repoRoot, 'eval', 'resilience-social-live.json')
   writeFileSync(outPath, `${JSON.stringify(payload, null, 2)}\n`)
   console.log(JSON.stringify(payload, null, 2))
   console.error(`Wrote ${outPath}`)

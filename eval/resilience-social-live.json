@@ -1,0 +1,571 @@
+{
+  "profile": "resilience-social-live",
+  "corpus": "resilience-social",
+  "path": "lexicon-slice + compose+resident_text+place_ranking",
+  "ran_at": "2026-11-20T04:20:06.361Z",
+  "question_count": 8,
+  "lexicon_max_rows": 100,
+  "lexicon": {
+    "corpus": "resilience-social",
+    "rows": 100,
+    "questions": 15,
+    "reports": 85,
+    "compose_words_ok_pct": 0,
+    "map_not_other_pct": 4
+  },
+  "corpus_baseline": {
+    "question_rows": 8,
+    "geo_rank1_resolved_pct": 100,
+    "map_label_lexicon_accuracy_pct": null,
+    "note": "Geo rank-1 comes from placesNear at annotation time; lexicon is model-independent."
+  },
+  "paired_compare": {
+    "left_model": "gemma-4-e2b",
+    "right_model": "qwen3-1.7b-instruct",
+    "identical_output_rows": 0,
+    "place_hit_both": 5,
+    "place_hit_left_only": 3,
+    "place_hit_right_only": 0,
+    "place_hit_neither": 0,
+    "action_acceptable_both": 0,
+    "action_acceptable_left_only": 0,
+    "action_acceptable_right_only": 0,
+    "geo_place_subset_both": 0
+  },
+  "scorecard": {
+    "device_target": "pi",
+    "p95_budget_ms": 3500,
+    "weights": {
+      "geo_lift_rank1_pts": 2,
+      "geo_rank1_pct": 3,
+      "action_acceptable_pct": 2,
+      "p95_latency_ms": 3
+    },
+    "chosen_composer": "gemma-4-e2b",
+    "fallback_composer": "qwen3-1.7b-instruct",
+    "confidence": "medium",
+    "rationale": [
+      "Gemma rank-1 (100%) > Qwen (62.5%) + 20pp with p95 within 3500ms budget."
+    ],
+    "tie_break": {
+      "action_edge_pp": 15,
+      "rank1_edge_pp": 20,
+      "rank1_similar_pp": 10
+    },
+    "models": [
+      {
+        "model": "gemma-4-e2b",
+        "geo_rank1_pct": 100,
+        "action_acceptable_pct": 0,
+        "p95_ms": 3141,
+        "geo_lift_rank1_pts": null,
+        "places_non_empty_pct": 100,
+        "avg_place_count": 2
+      },
+      {
+        "model": "qwen3-1.7b-instruct",
+        "geo_rank1_pct": 62.5,
+        "action_acceptable_pct": 0,
+        "p95_ms": 1937,
+        "geo_lift_rank1_pts": null,
+        "places_non_empty_pct": 100,
+        "avg_place_count": 1.5
+      }
+    ],
+    "paired_compare": {
+      "left_model": "gemma-4-e2b",
+      "right_model": "qwen3-1.7b-instruct",
+      "identical_output_rows": 0,
+      "place_hit_both": 5,
+      "place_hit_left_only": 3,
+      "place_hit_right_only": 0,
+      "place_hit_neither": 0,
+      "action_acceptable_both": 0,
+      "action_acceptable_left_only": 0,
+      "action_acceptable_right_only": 0,
+      "geo_place_subset_both": 0
+    }
+  },
+  "results": [
+    {
+      "model": "gemma-4-e2b",
+      "gguf": "gemma-4-e2b-q4_k_m.gguf",
+      "rows": 8,
+      "schema_valid_model": 8,
+      "compose_rules_fallback": 0,
+      "compose_failed": 0,
+      "schema_valid_rate_pct": 100,
+      "action_acceptable_pct": 0,
+      "required_actions_met_pct": 100,
+      "geo_rank1_in_output_pct": 100,
+      "geo_top2_in_output_pct": 100,
+      "must_include_place_pct": 100,
+      "counterfactual": {
+        "enabled": false,
+        "hint": "Set LOCAL_AI_EVAL_COUNTERFACTUAL=1 to compare geo-narrow vs full-vocab rank-1."
+      },
+      "places_non_empty_pct": 100,
+      "avg_place_count": 2,
+      "model_rows": 8,
+      "avg_latency_ms": 3110,
+      "p50_latency_ms": 3112,
+      "p95_latency_ms": 3141
+    },
+    {
+      "model": "qwen3-1.7b-instruct",
+      "gguf": "qwen3-1.7b-instruct-q4_k_m.gguf",
+      "rows": 8,
+      "schema_valid_model": 8,
+      "compose_rules_fallback": 0,
+      "compose_failed": 0,
+      "schema_valid_rate_pct": 100,
+      "action_acceptable_pct": 0,
+      "required_actions_met_pct": 100,
+      "geo_rank1_in_output_pct": 62.5,
+      "geo_top2_in_output_pct": 62.5,
+      "must_include_place_pct": 62.5,
+      "counterfactual": {
+        "enabled": false,
+        "hint": "Set LOCAL_AI_EVAL_COUNTERFACTUAL=1 to compare geo-narrow vs full-vocab rank-1."
+      },
+      "places_non_empty_pct": 100,
+      "avg_place_count": 1.5,
+      "model_rows": 8,
+      "avg_latency_ms": 1733,
+      "p50_latency_ms": 1815,
+      "p95_latency_ms": 1937
+    }
+  ],
+  "detail": [
+    {
+      "model": "gemma-4-e2b",
+      "row_evals": [
+        {
+          "id": "clx_005",
+          "text": "Doing what folks do before a big storm... (@ Key Food) http://t.co/iK8em7tz",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 3123,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ]
+        },
+        {
+          "id": "clx_009",
+          "text": "?? RT @AHurricaneSandy: HURRICANE SANDY AIN'T EVEN A SCARY NAME THO. I NEED A TERRIFYING NAME LIKE HURRICANE SHANAYNAY OR SUM SHIT.",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 3089,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ]
+        },
+        {
+          "id": "clx_024",
+          "text": "@nenshi @cityofcalgary Any word of evacuating Chaparral Valley? We are kinda sitting right in the river bed... #newcommunity",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 3104,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ]
+        },
+        {
+          "id": "clx_028",
+          "text": "@cityofcalgary @CalgaryPolice is there anything I (or anyone) can do to help with the flood relief efforts?  #yycflood",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 3141,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ]
+        },
+        {
+          "id": "clx_029",
+          "text": "S/o to my mum the emergency nurse who will have a hell of a night with flood victims. Thank you all @cityofcalgary  emergency services!",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 3104,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_09",
+            "P_DIS_01"
+          ]
+        },
+        {
+          "id": "clx_031",
+          "text": "@CalgaryPolice Is Hwacs playing any role for this evacuation order? Or down in High River?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 3076,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ]
+        },
+        {
+          "id": "clx_034",
+          "text": "@GlobalCalgary: WATCH IN FULL: Alberta Floods 2013. A special edition of the Early News with @Linda_Olsen. #YYC #abflood when ?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 3134,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ]
+        },
+        {
+          "id": "clx_039",
+          "text": "What a day in #Canmore , lets hope it's a better day tomorrow! no more #Canmoreflood http://t.co/48tcOf0XY3",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 3112,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ]
+        }
+      ]
+    },
+    {
+      "model": "qwen3-1.7b-instruct",
+      "row_evals": [
+        {
+          "id": "clx_005",
+          "text": "Doing what folks do before a big storm... (@ Key Food) http://t.co/iK8em7tz",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1937,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "clx_009",
+          "text": "?? RT @AHurricaneSandy: HURRICANE SANDY AIN'T EVEN A SCARY NAME THO. I NEED A TERRIFYING NAME LIKE HURRICANE SHANAYNAY OR SUM SHIT.",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER"
+          ],
+          "source": "model",
+          "latency_ms": 1925,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "clx_024",
+          "text": "@nenshi @cityofcalgary Any word of evacuating Chaparral Valley? We are kinda sitting right in the river bed... #newcommunity",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 1900,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "clx_028",
+          "text": "@cityofcalgary @CalgaryPolice is there anything I (or anyone) can do to help with the flood relief efforts?  #yycflood",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 1600,
+          "picks_geo_rank1": false,
+          "picks_geo_top2": false,
+          "must_include_places_met": false,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "clx_029",
+          "text": "S/o to my mum the emergency nurse who will have a hell of a night with flood victims. Thank you all @cityofcalgary  emergency services!",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 1417,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "clx_031",
+          "text": "@CalgaryPolice Is Hwacs playing any role for this evacuation order? Or down in High River?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 1815,
+          "picks_geo_rank1": true,
+          "picks_geo_top2": true,
+          "must_include_places_met": true,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "place_ids": [
+            "P_DIS_08",
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "clx_034",
+          "text": "@GlobalCalgary: WATCH IN FULL: Alberta Floods 2013. A special edition of the Early News with @Linda_Olsen. #YYC #abflood when ?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 1626,
+          "picks_geo_rank1": false,
+          "picks_geo_top2": false,
+          "must_include_places_met": false,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        },
+        {
+          "id": "clx_039",
+          "text": "What a day in #Canmore , lets hope it's a better day tomorrow! no more #Canmoreflood http://t.co/48tcOf0XY3",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label_detected": "other",
+          "acceptable_action_ids": [
+            "A_HIGHER",
+            "A_EVAC"
+          ],
+          "source": "model",
+          "latency_ms": 1643,
+          "picks_geo_rank1": false,
+          "picks_geo_top2": false,
+          "must_include_places_met": false,
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "counterfactual_full_picks_rank1": null,
+          "action_ids": [
+            "A_SHELTER"
+          ],
+          "place_ids": [
+            "P_DIS_09"
+          ]
+        }
+      ]
+    }
+  ]
+}

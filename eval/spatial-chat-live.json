@@ -1,0 +1,3812 @@
+{
+  "profile": "spatial-chat-live",
+  "corpus": "resilience-synthetic",
+  "path": "spatial-chat (map label drives action rubric)",
+  "ran_at": "2026-11-20T05:40:06.957Z",
+  "upstream": {
+    "llamaBaseUrl": "http://127.0.0.1:8080",
+    "glinerBaseUrl": "http://127.0.0.1:8091",
+    "composeTimeoutMs": 60000,
+    "mapTimeoutMs": 1000,
+    "generateTimeoutMs": 600000,
+    "gliner_reachable": true
+  },
+  "corpus_baseline": {
+    "question_rows": 34,
+    "geo_rank1_resolved_pct": 100,
+    "map_label_lexicon_accuracy_pct": 100,
+    "note": "Geo rank-1 comes from placesNear at annotation time; lexicon is model-independent."
+  },
+  "paired_compare": null,
+  "scorecard": {
+    "device_target": "pi",
+    "p95_budget_ms": 3500,
+    "weights": {
+      "geo_lift_rank1_pts": 2,
+      "geo_rank1_pct": 3,
+      "action_acceptable_pct": 2,
+      "p95_latency_ms": 3
+    },
+    "chosen_composer": "qwen3-0.6b-instruct",
+    "fallback_composer": "llama-3.2-3b-instruct",
+    "confidence": "medium",
+    "rationale": [
+      "No gemma+qwen pair; picked within-family by action → rank-1 → p95 (budget preferred).",
+      "Peer pick qwen3-0.6b-instruct (action 73.5%, rank1 100%, p95 789ms)."
+    ],
+    "tie_break": {
+      "action_edge_pp": 15,
+      "rank1_edge_pp": 20,
+      "rank1_similar_pp": 10
+    },
+    "models": [
+      {
+        "model": "qwen3-0.6b-instruct",
+        "geo_rank1_pct": 100,
+        "action_acceptable_pct": 73.5,
+        "p95_ms": 789,
+        "geo_lift_rank1_pts": null,
+        "places_non_empty_pct": 100,
+        "avg_place_count": 1.1
+      },
+      {
+        "model": "llama-3.2-3b-instruct",
+        "geo_rank1_pct": 100,
+        "action_acceptable_pct": 73.5,
+        "p95_ms": 3204,
+        "geo_lift_rank1_pts": null,
+        "places_non_empty_pct": 100,
+        "avg_place_count": 2
+      },
+      {
+        "model": "phi-3.5-mini-instruct",
+        "geo_rank1_pct": null,
+        "action_acceptable_pct": null,
+        "p95_ms": 0,
+        "geo_lift_rank1_pts": null,
+        "places_non_empty_pct": null,
+        "avg_place_count": null
+      }
+    ],
+    "paired_compare": null
+  },
+  "results": [
+    {
+      "model": "qwen3-0.6b-instruct",
+      "map_label_accuracy_pct": 47.1,
+      "map_gliner_pct": 100,
+      "geo_rank1_in_compose_pct": 100,
+      "action_acceptable_pct": 73.5,
+      "required_actions_met_pct": 100,
+      "spatial_rows": 34,
+      "compose_model_rows": 34,
+      "avg_compose_latency_ms": 631,
+      "p50_compose_latency_ms": 620,
+      "p95_compose_latency_ms": 789,
+      "counterfactual": {
+        "enabled": false,
+        "hint": "Set LOCAL_AI_EVAL_COUNTERFACTUAL=1 to compare geo-narrow vs full-vocab rank-1."
+      },
+      "places_non_empty_pct": 100,
+      "avg_place_count": 1.1,
+      "model_rows": 34
+    },
+    {
+      "model": "llama-3.2-3b-instruct",
+      "map_label_accuracy_pct": 47.1,
+      "map_gliner_pct": 100,
+      "geo_rank1_in_compose_pct": 100,
+      "action_acceptable_pct": 73.5,
+      "required_actions_met_pct": 100,
+      "spatial_rows": 34,
+      "compose_model_rows": 34,
+      "avg_compose_latency_ms": 2958,
+      "p50_compose_latency_ms": 2920,
+      "p95_compose_latency_ms": 3204,
+      "counterfactual": {
+        "enabled": false,
+        "hint": "Set LOCAL_AI_EVAL_COUNTERFACTUAL=1 to compare geo-narrow vs full-vocab rank-1."
+      },
+      "places_non_empty_pct": 100,
+      "avg_place_count": 2,
+      "model_rows": 34
+    },
+    {
+      "model": "phi-3.5-mini-instruct",
+      "map_label_accuracy_pct": 47.1,
+      "map_gliner_pct": 100,
+      "geo_rank1_in_compose_pct": null,
+      "action_acceptable_pct": null,
+      "required_actions_met_pct": null,
+      "spatial_rows": 34,
+      "compose_model_rows": 0,
+      "avg_compose_latency_ms": 0,
+      "p50_compose_latency_ms": 0,
+      "p95_compose_latency_ms": 0,
+      "counterfactual": {
+        "enabled": false,
+        "hint": "Set LOCAL_AI_EVAL_COUNTERFACTUAL=1 to compare geo-narrow vs full-vocab rank-1."
+      },
+      "places_non_empty_pct": null,
+      "avg_place_count": null,
+      "model_rows": 0
+    }
+  ],
+  "detail": [
+    {
+      "model": "qwen3-0.6b-instruct",
+      "row_evals": [
+        {
+          "id": "msg_001",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_004",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_007",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_010",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_013",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_016",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_019",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_022",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_025",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_028",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_031",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09"
+          ],
+          "action_ids": [
+            "A_SHELTER",
+            "A_HIGHER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_034",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_037",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_040",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_043",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_046",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_049",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_052",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_055",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_058",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_061",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_064",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_067",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_070",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_073",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_076",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_079",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_SHELTER",
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_082",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_085",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_088",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_091",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09"
+          ],
+          "action_ids": [
+            "A_SHELTER",
+            "A_HIGHER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_094",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_097",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_100",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_HIGHER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        }
+      ]
+    },
+    {
+      "model": "llama-3.2-3b-instruct",
+      "row_evals": [
+        {
+          "id": "msg_001",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_004",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_007",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_09"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_010",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_013",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_016",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_019",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_022",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_025",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_028",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_031",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_034",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_037",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_040",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_043",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_046",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_049",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_052",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_055",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_058",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_061",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_064",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_067",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_070",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_073",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_076",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_079",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_09"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_082",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_085",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_088",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_091",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_094",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_097",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": false,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_100",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "model",
+          "picks_geo_rank1": true,
+          "intent_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10"
+          ],
+          "action_ids": [
+            "A_STAY",
+            "A_EVAC"
+          ],
+          "action_acceptable": true,
+          "required_actions_met": true,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        }
+      ]
+    },
+    {
+      "model": "phi-3.5-mini-instruct",
+      "row_evals": [
+        {
+          "id": "msg_001",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_004",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_007",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_EVAC"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_010",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_013",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_016",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_019",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_EVAC"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_022",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_025",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_028",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_031",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_EVAC"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_034",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_037",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_040",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_043",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_EVAC"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_046",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_049",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_052",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_055",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_EVAC"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_058",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_061",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_064",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_067",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_EVAC"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_070",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_073",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_076",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_079",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_EVAC"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_082",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_085",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_088",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_091",
+          "text": "What should I do if the siren goes off again?",
+          "geo_rank1_id": "P_DIS_09",
+          "map_label": "what_to_do",
+          "map_label_lexicon": "what_to_do",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "what_to_do",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_05",
+            "P_DIS_21",
+            "P_DIS_17",
+            "P_DIS_13"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_EVAC"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_EVAC",
+            "A_SHELTER",
+            "A_HIGHER",
+            "A_STAY"
+          ]
+        },
+        {
+          "id": "msg_094",
+          "text": "¿Cuánto durará la alerta de humo?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "how_long",
+          "map_label_lexicon": "how_long",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "how_long",
+          "map_ok": true,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_SHELTER"
+          ]
+        },
+        {
+          "id": "msg_097",
+          "text": "Anyone know if the nearest shelter is still taking people?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "where_to_go",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "where_to_go",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_SHELTER",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        },
+        {
+          "id": "msg_100",
+          "text": "Is it safe for the kids to wait outside the school gym?",
+          "geo_rank1_id": "P_DIS_08",
+          "map_label": "is_it_safe_outside",
+          "map_label_lexicon": "is_it_safe_for_kids",
+          "map_source": "spatial_map",
+          "map_used_gliner": true,
+          "map_expected": "is_it_safe_for_kids",
+          "map_ok": false,
+          "spatial_place_ids": [
+            "P_DIS_08",
+            "P_DIS_10",
+            "P_DIS_09",
+            "P_DIS_01",
+            "P_DIS_03",
+            "P_DIS_06",
+            "P_DIS_04",
+            "P_DIS_02"
+          ],
+          "source": "rules_fallback",
+          "picks_geo_rank1": false,
+          "intent_place_ids": [],
+          "action_ids": [
+            "A_STAY"
+          ],
+          "action_acceptable": null,
+          "required_actions_met": null,
+          "acceptable_action_ids": [
+            "A_STAY",
+            "A_EVAC",
+            "A_HIGHER"
+          ]
+        }
+      ]
+    }
+  ]
+}

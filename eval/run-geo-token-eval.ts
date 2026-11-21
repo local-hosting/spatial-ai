@@ -38,12 +38,12 @@ type BenchRow = {
   session: { lat?: number; lon?: number; geotype?: string }
   event_ref: string
   band: number
-  source?: 'synthetic' | 'crisislex'
+  source?: 'synthetic' | 'resilience-social'
 }
 
 type EvalRow = {
   id: string
-  corpus: 'synthetic' | 'crisislex'
+  corpus: 'synthetic' | 'resilience-social'
   place_hit: boolean
   place_rank: number | null
   map_label_ok: boolean | null
@@ -82,10 +82,10 @@ function benchRowFromMessage(
 
 function loadCorpus(): BenchRow[] {
   const synthetic = readMessageCorpus('resilience-synthetic')
-  const crisislex = readMessageCorpus('resilience-crisislex')
+  const social = readMessageCorpus('resilience-social')
   return [
     ...synthetic.messages.map((m) => benchRowFromMessage(m, 'synthetic')),
-    ...crisislex.messages.map((m) => benchRowFromMessage(m, 'crisislex')),
+    ...social.messages.map((m) => benchRowFromMessage(m, 'resilience-social')),
   ]
 }
 
@@ -230,17 +230,17 @@ async function main(): Promise<void> {
   }
 
   const syntheticRows = evalRows.filter((r) => r.corpus === 'synthetic')
-  const crisislexRows = evalRows.filter((r) => r.corpus === 'crisislex')
+  const socialRows = evalRows.filter((r) => r.corpus === 'resilience-social')
 
   const report = {
     profile,
     corpus_size: rows.length,
     corpus_breakdown: {
       synthetic: { count: 100, metrics: sliceMetrics(syntheticRows) },
-      crisislex: {
+      'resilience-social': {
         count: 100,
-        metrics: sliceMetrics(crisislexRows),
-        dataset: 'github.com/sajao/CrisisLex (CrisisLexT6, on-topic)',
+        metrics: sliceMetrics(socialRows),
+        upstream: 'github.com/sajao/CrisisLex (CrisisLexT6, on-topic)',
       },
     },
     place_recall_at_8: Math.round((placeHits / rows.length) * 1000) / 10,
