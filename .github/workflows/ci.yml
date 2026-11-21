@@ -56,6 +56,16 @@ jobs:
           repository: local-hosting/spool
           token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
           path: ws/spool
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/geokit
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+          path: ws/geokit
+      - uses: actions/checkout@v4
+        with:
+          repository: local-hosting/geotypes
+          token: ${{ secrets.LOCAL_HOSTING_REPO_TOKEN }}
+          path: ws/geotypes
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.TOOLCHAIN_NODE }}
@@ -65,5 +75,7 @@ jobs:
         run: yarn install --immutable
       - working-directory: ws
         run: yarn bootstrap:stack
+      - working-directory: ws
+        run: yarn build:geokit && yarn build:geotypes
       - working-directory: ws
         run: yarn workspace @local-hosting/spatial-ai ci
